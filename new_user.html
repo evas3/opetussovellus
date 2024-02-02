@@ -1,0 +1,18 @@
+<title>Uusi käyttäjä</title>
+<h1>Luo uusi käyttäjä</h1>
+<form action="/user_created" method="POST">
+    Anna käyttäjätunnus:
+    <input type="text" name="name">
+    Anna salasana:
+    <input type="text" name="keyw">
+    Syötä salasana uudelleen:
+    <input type="text" name="keyw_redone">
+    KäYttäjärooli:
+    <p>
+        <input type="radio" name="role" value="1"> Oppilas
+        <input type="radio" name="role" value="2"> Opettaja
+    </p>
+    <br>
+    <input type="submit" value="Luo käyttäjätunnus">
+
+</form>
