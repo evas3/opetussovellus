@@ -11,9 +11,9 @@ def index():
 def user():
     username = request.form["name"]
     keyword = request.form["keyw"]
-    if "ope":
+    if username == "ope":
         return render_template("teacher.html", name=username)
-    elif "oppilas":
+    elif username == "oppilas":
         return render_template("students.html", name=username)
 
 @app.route("/create_user")

@@ -1,15 +1,16 @@
 <title>Etusivu</title>
 <h1>Etusivu</h1>
-<i>Tervetuloa opetussovellukseen</i>
-<i>Kirjaudu sisään jatkaaksesi</i>
+<text>Tervetuloa opetussovellukseen. Kirjaudu sisään jatkaaksesi</text>
+<br>
 <form action="/user" method="POST">
     Käyttäjänimi:
     <input type="text" name="name">
+    <br>
     Salasana:
     <input type="text" name="keyw">
     <br>
     <input type="submit" value="Kirjaudu">
 </form>
-
+<br>
 <i> Jos sinulla ei ole käyttäjätiliä, voit luoda sellaisen täältä:</i>
 <a href="/create_user">Luo uusi käyttäjätunus</a>
