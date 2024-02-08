@@ -1,7 +1,14 @@
 from flask import Flask
-from flask import render_template, request, redirect
+from flask import render_template, request, redirect, session
+from flask_sqlalchemy import SQLAlchemy
+from os import getenv
+from sqlalchemy.sql import text
+
 
 app = Flask(__name__)
+app.config["SQLALCHEMY_DATABASE_URI"] = getenv("DATABASE_URL")
+app.secret_key = getenv("SEC_KEY")
+db = SQLAlchemy(app)
 
 @app.route("/")
 def index():
@@ -9,12 +16,19 @@ def index():
 
 @app.route("/user", methods=["POST"])
 def user():
-    username = request.form["name"]
+    usersname = request.form["name"]
     keyword = request.form["keyw"]
-    if username == "ope":
-        return render_template("teacher.html", name=username)
-    elif username == "oppilas":
-        return render_template("students.html", name=username)
+    sql = "SELECT passkey, student FROM Users where username=:usersname"
+    executed = db.session.execute(text(sql), {"usersname":usersname})
+    matches = executed.fetchall()
+    for i in matches:
+        if i[0] == keyword:
+            if i[1] == "Oppilas":
+                session["usersname"] = usersname
+                return render_template("students.html", name=usersname)
+            else:
+                session["usersname"] = usersname
+                return render_template("teacher.html", name=usersname)
 
 @app.route("/create_user")
 def create_user():
@@ -31,6 +45,20 @@ def course_added():
 
 @app.route("/user_created", methods=["POST"])
 def user_created():
-    username = request.form["name"]
-    keyword = request.form["kayw"]
+    usersname = request.form["name"]
+    keyword = request.form["keyw"]
+    student = request.form["role"]
+    role_boolean = True if student == "Oppilas" else False
+    sql = "INSERT INTO Users (username, passkey, student) VALUES (:usersname, :keyword, :role_boolean)"
+    db.session.execute(text(sql), {"usersname":usersname, "keyword":keyword, "role_boolean":role_boolean})
+    db.session.commit()
     return render_template("user_created.html")
+
+@app.route("/teacher")
+def teacher():
+    return render_template("teacher.html")
+
+@app.route("/logout")
+def logout():
+    del session["usersname"]
+    return redirect("/")

@@ -1,4 +1,9 @@
+{% if session.usersname %}
 <title>Kurssi lisätty</title>
 <h1>Kurssi {{course_name}} lisätty onnistuneesti</h1>
 <i>Palaa etusivulle</i>
-<a href="/teacher.html">Jatka</a>
+<a href="/teacher">Jatka</a>
+{% else %}
+<text>Sinun tulee ensin kirjautua sisään</text>
+<a href="/">Kirjaudu sisään</a>
+{% endif %}
