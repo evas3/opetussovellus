@@ -3,6 +3,7 @@ from flask import render_template, request, redirect, session
 from flask_sqlalchemy import SQLAlchemy
 from os import getenv
 from sqlalchemy.sql import text
+from werkzeug.security import check_password_hash, generate_password_hash
 
 
 app = Flask(__name__)
@@ -22,13 +23,14 @@ def user():
     executed = db.session.execute(text(sql), {"usersname":usersname})
     matches = executed.fetchall()
     for i in matches:
-        if i[0] == keyword:
+        if check_password_hash(i[0], keyword):
             if i[1] == "Oppilas":
                 session["usersname"] = usersname
                 return render_template("students.html", name=usersname)
             else:
                 session["usersname"] = usersname
                 return render_template("teacher.html", name=usersname)
+    return redirect("/")
 
 @app.route("/create_user")
 def create_user():
@@ -48,9 +50,10 @@ def user_created():
     usersname = request.form["name"]
     keyword = request.form["keyw"]
     student = request.form["role"]
+    hashed = generate_password_hash(keyword)
     role_boolean = True if student == "Oppilas" else False
     sql = "INSERT INTO Users (username, passkey, student) VALUES (:usersname, :keyword, :role_boolean)"
-    db.session.execute(text(sql), {"usersname":usersname, "keyword":keyword, "role_boolean":role_boolean})
+    db.session.execute(text(sql), {"usersname":usersname, "keyword":hashed, "role_boolean":role_boolean})
     db.session.commit()
     return render_template("user_created.html")
 
