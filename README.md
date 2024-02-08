@@ -1,6 +1,7 @@
 # Opetussovellus
-## Viikko 2
-Pohjustusta tehty mutta sovellus ei tee vielä mitään. Rakennetta ja toiminnallisuutta hahmoteltu.
+## Viikko 3
+Sovellukseen voi kirjautua sisään. Jos kirjautuminen onnistuu niin ohjelma tervehtii käyttäjää. Opettajalla on mahdollisuus luoda uusi kurssi tai kirjautua ulos. Kurssin luomisen yhteydessä kysytään kurssin nimeä. Oppilas voi kirjautua ulos. Ohjelma ei toistaiseksi näytä luotuja kursseja. Käyttäjä voi myös luoda uuden tunnuksen ja valita opettajan tai oppilaan roolin. Ohjelma ilmoittaa kurssin luomisen tai käyttäjän luomisen onnistumisesta.
+
 
 ## Tarkoitus
 Sovelluksen tarkoituksena on toimia alustana verkkokurssien järjestämiselle. Alustalla oleviin verkkokursseihin sisältyy kyseisen kurssin kuvista ja tekstistä koostuva opetusmateriaali sekä opiskelijan oppimista mittaavat ja oppilaiden oppimisesta dataa keräävät testit. Kurssin testit voivat olla monivalintatestejä tai kirjallisia testejä. 
