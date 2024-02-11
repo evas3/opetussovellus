@@ -19,17 +19,20 @@ def index():
 def user():
     usersname = request.form["name"]
     keyword = request.form["keyw"]
-    sql = "SELECT passkey, student FROM Users where username=:usersname"
-    executed = db.session.execute(text(sql), {"usersname":usersname})
+    sql_users = "SELECT passkey, student FROM Users where username=:usersname"
+    executed = db.session.execute(text(sql_users), {"usersname":usersname})
     matches = executed.fetchall()
     for i in matches:
         if check_password_hash(i[0], keyword):
-            if i[1] == "Oppilas":
+            sql_courses = "SELECT coursename FROM Courses"
+            execute2 = db.session.execute(text(sql_courses))
+            courses = execute2.fetchall()
+            if i[1] == True:
                 session["usersname"] = usersname
-                return render_template("students.html", name=usersname)
+                return render_template("student.html", courses=courses)
             else:
                 session["usersname"] = usersname
-                return render_template("teacher.html", name=usersname)
+                return render_template("teacher.html", courses=courses)
     return redirect("/")
 
 @app.route("/create_user")
@@ -43,6 +46,10 @@ def create_course():
 @app.route("/course_added", methods=["POST"])
 def course_added():
     course_name = request.form["course_name"]
+    teacher = session["usersname"]
+    sql = "INSERT INTO Courses (coursename, teacher, students) VALUES (:course_name, :teacher, NULL)"
+    db.session.execute(text(sql), {"course_name":course_name, "teacher":teacher})
+    db.session.commit()
     return render_template("course_added.html", course_name=course_name)
 
 @app.route("/user_created", methods=["POST"])
@@ -51,7 +58,7 @@ def user_created():
     keyword = request.form["keyw"]
     student = request.form["role"]
     hashed = generate_password_hash(keyword)
-    role_boolean = True if student == "Oppilas" else False
+    role_boolean = True if student == "1" else False
     sql = "INSERT INTO Users (username, passkey, student) VALUES (:usersname, :keyword, :role_boolean)"
     db.session.execute(text(sql), {"usersname":usersname, "keyword":hashed, "role_boolean":role_boolean})
     db.session.commit()
@@ -59,7 +66,10 @@ def user_created():
 
 @app.route("/teacher")
 def teacher():
-    return render_template("teacher.html")
+    sql_courses = "SELECT coursename FROM Courses"
+    execute2 = db.session.execute(text(sql_courses))
+    courses = execute2.fetchall()
+    return render_template("teacher.html", courses=courses)
 
 @app.route("/logout")
 def logout():

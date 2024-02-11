@@ -1,8 +1,13 @@
 {% if session.usersname %}
 <title>Tervetuloa</title>
-<h1>Tervetuloa {{ name }}!</h1>
+<h1>Tervetuloa {{ session.usersname }}!</h1>
 <text>Tässä näet verkkokurssit:</text>
 <br>
+<ul>
+    {% for course in courses %}
+        <li>{{course[0]}}</li>
+    {% endfor %}
+</ul>
 <text>Kirjaudu ulos:</text>
 <a href="/logout">Kirjaudu ulos</a>
 {% else %}
