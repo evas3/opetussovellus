@@ -1,0 +1,11 @@
+{% if session.usersname %}
+<title> {{course}} </title>
+<h1> {{course}} </h1>
+{% if session.teacher %}
+<text>Muokkaa kurssia:</text>
+<text>Poista kurssi:</text>
+{% endif %}
+{% else %}
+<text>Sinun tulee ensin kirjautua sisään nähdäksesi kurssit</text>
+<a href="/">Kirjaudu sisään</a>
+{% endif %}

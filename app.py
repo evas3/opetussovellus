@@ -19,23 +19,32 @@ def index():
 def user():
     usersname = request.form["name"]
     keyword = request.form["keyw"]
-    sql_users = "SELECT passkey, student FROM Users where username=:usersname"
+    sql_users = "SELECT passkey, student FROM Users WHERE username=:usersname"
     executed = db.session.execute(text(sql_users), {"usersname":usersname})
     matches = executed.fetchall()
     for i in matches:
         if check_password_hash(i[0], keyword):
-            sql_courses = "SELECT coursename FROM Courses"
-            execute2 = db.session.execute(text(sql_courses))
-            courses = execute2.fetchall()
+            session["usersname"] = usersname
             if i[1] == True:
-                session["usersname"] = usersname
                 session["teacher"] = False
-                return render_template("student.html", courses=courses)
             else:
-                session["usersname"] = usersname
                 session["teacher"] = True
-                return render_template("teacher.html", courses=courses)
+            return redirect("/courses")
     return redirect("/")
+
+@app.route("/courses")
+def courses():
+    if session["teacher"]:
+        sql_teacher_courses = "SELECT coursename, id FROM Courses WHERE teacher=:teacher"
+        execute = db.session.execute(text(sql_teacher_courses), {"teacher":session["usersname"]})
+        teacher_courses = execute.fetchall()
+        return render_template("courses.html", courses=teacher_courses)
+    else:
+        sql_courses = "SELECT coursename, id FROM Courses"
+        execute = db.session.execute(text(sql_courses))
+        courses_all = execute.fetchall()
+        return render_template("courses.html", courses=courses_all)
+
 
 @app.route("/create_user")
 def create_user():
@@ -66,21 +75,15 @@ def user_created():
     db.session.commit()
     return render_template("user_created.html")
 
-@app.route("/teacher")
-def teacher():
-    sql_courses = "SELECT coursename FROM Courses"
-    execute2 = db.session.execute(text(sql_courses))
-    courses = execute2.fetchall()
-    return render_template("teacher.html", courses=courses)
-
 @app.route("/logout")
 def logout():
     del session["usersname"]
     session["teacher"] = False
     return redirect("/")
 
-@app.route("/course<int:id>")
+@app.route("/courses/<int:id>")
 def course(id):
     sql = "SELECT coursename FROM Courses WHERE id=:id"
     execute2 = db.session.execute(text(sql), {"id":id})
-    courses = execute2.fetchall()
+    course = execute2.fetchone()[0]
+    return render_template("course.html", course=course)

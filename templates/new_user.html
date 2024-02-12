@@ -1,6 +1,6 @@
 <title>Uusi käyttäjä</title>
 <h1>Luo uusi käyttäjä</h1>
-<form action="/user_created" method="POST">
+<form action="/user_created" method="POST" onsubmit="return check(this)">
     Anna käyttäjätunnus:
     <input type="text" name="name">
     <br>
@@ -19,3 +19,29 @@
     <input type="submit" value="Luo käyttäjätunnus">
 
 </form>
+
+<script>
+function check(form) {
+    if (form.name.value.length > 25) {
+        alert("Käyttäjänimi on liian pitkä");
+        return false;
+    }
+    if (form.name.value.length < 3) {
+        alert("Käyttäjänimen tulee olla ainakin kolmen merkin pituinen");
+        return false;
+    }
+    if (form.keyw.value.length > 40) {
+        alert("Salasana on liian pitkä");
+        return false;
+    }
+    if (form.keyw.value.length < 5) {
+        alert("Salasanan tulee olla ainakin viiden merkin pituinen");
+        return false;
+    }
+    if (form.keyw.value != form.keyw_redone.value) {
+        alert("Salasanat eroavat toisistaan");
+        return false;
+    }
+    return true;
+}
+</script>

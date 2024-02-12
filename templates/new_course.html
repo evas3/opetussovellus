@@ -1,7 +1,7 @@
 {% if session.usersname and session.teacher%}
 <title>Uusi kurssi</title>
 <h1>Uusi kurssi</h1>
-<form action="/course_added" method="POST">
+<form action="/course_added" method="POST" onsubmit="return check(this)">
     Kurssin nimi:
     <input type="text" name="course_name">
     <br>
@@ -11,3 +11,17 @@
 <text>Sinun tulee ensin kirjautua sisään opettajana lisätäksesi kurssin</text>
 <a href="/">Kirjaudu sisään</a>
 {% endif %}
+
+<script>
+function check(form) {
+    if (form.course_name.value.length > 50) {
+        alert("Kurssinimi on liian pitkä");
+        return false;
+    }
+    if (form.course_name.valeu.length < 3) {
+        alert("Kurssinimen tulee olla ainakin kolmen merkin pituinen");
+        return false;
+    }
+    return true;
+}
+</script>

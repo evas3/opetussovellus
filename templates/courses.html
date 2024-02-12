@@ -1,0 +1,25 @@
+{% if session.usersname %}
+    <title>Tervetuloa</title>
+    <h1>Tervetuloa {{ session.usersname }}!</h1>
+    {% if session.teacher %}
+        <text>Tässä näet opettamasi kurssit:</text>
+    {% else %}
+        <text>Tässä näet saatavilla olevat kurssit:</text>
+    {% endif %}
+    <br>
+    <ul>
+        {% for course in courses %}
+            <li><a href="/courses/{{ course[1] }}">{{ course[0] }}</a></li>
+        {% endfor %}
+    </ul>
+    {% if session.teacher %}
+        <text>Lisää kurssi tästä:</text>
+        <a href="/create_course">Luo uusi kurssi</a>
+    {% endif %}
+    <br>
+    <text>Kirjaudu ulos:</text>
+    <a href="/logout">Kirjaudu ulos</a>
+{% else %}
+    <text>Sinun tulee ensin kirjautua sisään nähdäksesi kurssit</text>
+    <a href="/">Kirjaudu sisään</a>
+{% endif %}
