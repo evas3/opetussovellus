@@ -1,4 +1,4 @@
-{% if session.usersname %}
+{% if session.usersname and not session.teacher %}
 <title>Tervetuloa</title>
 <h1>Tervetuloa {{ session.usersname }}!</h1>
 <text>Tässä näet verkkokurssit:</text>
@@ -11,6 +11,6 @@
 <text>Kirjaudu ulos:</text>
 <a href="/logout">Kirjaudu ulos</a>
 {% else %}
-<text>Sinun tulee ensin kirjautua sisään</text>
+<text>Sinun tulee ensin kirjautua sisään oppilaana nähdäksesi tämän sivun</text>
 <a href="/">Kirjaudu sisään</a>
 {% endif %}

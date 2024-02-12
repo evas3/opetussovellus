@@ -1,4 +1,4 @@
-{% if session.usersname %}
+{% if session.usersname and session.teacher%}
 <title>Uusi kurssi</title>
 <h1>Uusi kurssi</h1>
 <form action="/course_added" method="POST">
@@ -8,6 +8,6 @@
     <input type="submit" value="Luo kurssi">
 </form>
 {% else %}
-<text>Sinun tulee ensin kirjautua sisään</text>
+<text>Sinun tulee ensin kirjautua sisään opettajana lisätäksesi kurssin</text>
 <a href="/">Kirjaudu sisään</a>
 {% endif %}

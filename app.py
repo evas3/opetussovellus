@@ -29,9 +29,11 @@ def user():
             courses = execute2.fetchall()
             if i[1] == True:
                 session["usersname"] = usersname
+                session["teacher"] = False
                 return render_template("student.html", courses=courses)
             else:
                 session["usersname"] = usersname
+                session["teacher"] = True
                 return render_template("teacher.html", courses=courses)
     return redirect("/")
 
@@ -74,4 +76,11 @@ def teacher():
 @app.route("/logout")
 def logout():
     del session["usersname"]
+    session["teacher"] = False
     return redirect("/")
+
+@app.route("/course<int:id>")
+def course(id):
+    sql = "SELECT coursename FROM Courses WHERE id=:id"
+    execute2 = db.session.execute(text(sql), {"id":id})
+    courses = execute2.fetchall()
