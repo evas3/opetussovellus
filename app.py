@@ -30,7 +30,9 @@ def user():
             else:
                 session["teacher"] = True
             return redirect("/courses")
-    return redirect("/")
+    message = "Käyttäjätunnus tai salasana on väärä"
+    direct = "/"
+    return render_template("error.html", message=message, direct=direct)
 
 @app.route("/courses")
 def courses():
@@ -44,7 +46,6 @@ def courses():
         execute = db.session.execute(text(sql_courses))
         courses_all = execute.fetchall()
         return render_template("courses.html", courses=courses_all)
-
 
 @app.route("/create_user")
 def create_user():
@@ -65,15 +66,26 @@ def course_added():
 
 @app.route("/user_created", methods=["POST"])
 def user_created():
-    usersname = request.form["name"]
     keyword = request.form["keyw"]
-    student = request.form["role"]
-    hashed = generate_password_hash(keyword)
-    role_boolean = True if student == "1" else False
-    sql = "INSERT INTO Users (username, passkey, student) VALUES (:usersname, :keyword, :role_boolean)"
-    db.session.execute(text(sql), {"usersname":usersname, "keyword":hashed, "role_boolean":role_boolean})
-    db.session.commit()
-    return render_template("user_created.html")
+    keyword2 = request.form["keyw_redone"]
+    direct = "/create_user"
+    if keyword == keyword2:
+        usersname = request.form["name"]
+        sql = "SELECT username FROM Users WHERE username=:usersname"
+        execute = db.session.execute(text(sql), {"usersname":usersname})
+        users = execute.fetchone()
+        if users == None:
+            student = request.form["role"]
+            hashed = generate_password_hash(keyword)
+            role_boolean = True if student == "1" else False
+            sql = "INSERT INTO Users (username, passkey, student) VALUES (:usersname, :keyword, :role_boolean)"
+            db.session.execute(text(sql), {"usersname":usersname, "keyword":hashed, "role_boolean":role_boolean})
+            db.session.commit()
+            return render_template("user_created.html")
+        message = "Käyttäjätunnus on jo käytössä"
+        return render_template("error.html", message=message, direct=direct)
+    message = "Kenttiin annetut salasanat eroavat toisistaan"
+    return render_template("error.html", message=message, direct=direct)
 
 @app.route("/logout")
 def logout():
@@ -84,6 +96,24 @@ def logout():
 @app.route("/courses/<int:id>")
 def course(id):
     sql = "SELECT coursename FROM Courses WHERE id=:id"
-    execute2 = db.session.execute(text(sql), {"id":id})
-    course = execute2.fetchone()[0]
+    execute = db.session.execute(text(sql), {"id":id})
+    course = execute.fetchone()[0]
     return render_template("course.html", course=course)
+
+@app.route("/delete/<int:id>")
+def delete(id):
+    if session["teacher"]:
+        sql = "SELECT teacher FROM Courses WHERE id=:id"
+        execute = db.session.execute(text(sql), {"id":id})
+        teacher = execute.fetchone()[0]
+        if teacher == session["usersname"]:
+            sql = "DELETE FROM Courses WHERE id=:id"
+            db.session.execute(text(sql), {"id":id})
+            db.session.commit()
+    return redirect("/courses")
+
+@app.route("/edit/<int:id>")
+def edit(id):
+    if session["teacher"]:
+        sql = ""
+    return redirect("/courses/<int:id>")
