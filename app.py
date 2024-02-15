@@ -95,9 +95,9 @@ def logout():
 
 @app.route("/courses/<int:id>")
 def course(id):
-    sql = "SELECT coursename FROM Courses WHERE id=:id"
+    sql = "SELECT coursename, id FROM Courses WHERE id=:id"
     execute = db.session.execute(text(sql), {"id":id})
-    course = execute.fetchone()[0]
+    course = execute.fetchone()
     return render_template("course.html", course=course)
 
 @app.route("/delete/<int:id>")
@@ -116,4 +116,4 @@ def delete(id):
 def edit(id):
     if session["teacher"]:
         sql = ""
-    return redirect("/courses/<int:id>")
+    return redirect("/courses/"+str(id))
