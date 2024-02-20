@@ -1,5 +1,5 @@
-from db import db
 from sqlalchemy.sql import text
+from db import db
 
 def new_user(username, password, role):
     sql = "INSERT INTO Users (username, passkey, student) VALUES (:usersname, :keyword, :role_boolean)"
@@ -22,6 +22,7 @@ def new_question(id, question, answer):
     db.session.commit()
 
 def new_choice(id, question, choice1, choice2, choice3, answer):
-    sql = "INSERT INTO Multiple_choice (course_id, question, choice1, choice2, choice3, answer) VALUES (:course_id, :question, :choice1, :choice2, :choice3, :answer)"
+    sql = """INSERT INTO Multiple_choice (course_id, question, choice1, choice2, choice3, answer) VALUES
+             (:course_id, :question, :choice1, :choice2, :choice3, :answer)"""
     db.session.execute(text(sql), {"course_id":id, "question":question, "choice1":choice1, "choice2":choice2, "choice3":choice3, "answer":answer})
     db.session.commit()

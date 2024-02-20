@@ -1,8 +1,8 @@
+from flask import render_template, request, redirect, session, flash
+from werkzeug.security import check_password_hash, generate_password_hash
 from app import app
 import sql_queries
 import sql_modify_tables
-from flask import render_template, request, redirect, session, flash
-from werkzeug.security import check_password_hash, generate_password_hash
 
 @app.route("/")
 def index():
@@ -16,7 +16,7 @@ def user():
     for user in matches:
         if check_password_hash(user[0], keyword):
             session["usersname"] = usersname
-            if user[1] == True:
+            if user[1]:
                 session["teacher"] = False
             else:
                 session["teacher"] = True
@@ -30,9 +30,8 @@ def courses():
     if session["teacher"]:
         teacher_courses = sql_queries.teachers_courses(session["usersname"])
         return render_template("courses.html", courses=teacher_courses)
-    else:
-        courses_all = sql_queries.all_courses()
-        return render_template("courses.html", courses=courses_all)
+    courses_all = sql_queries.all_courses()
+    return render_template("courses.html", courses=courses_all)
 
 @app.route("/create_user")
 def create_user():
@@ -57,7 +56,7 @@ def user_created():
     if keyword == keyword2:
         usersname = request.form["name"]
         users = sql_queries.check_username(usersname)
-        if users == None:
+        if users is None:
             student = request.form["role"]
             hashed = generate_password_hash(keyword)
             role_boolean = True if student == "1" else False
@@ -80,7 +79,8 @@ def course(id):
     multiplechoice = sql_queries.multiplechoice_tests(id)
     course = sql_queries.spesific_course(id)
     amount = True if (len(tests) + len(multiplechoice)) > 0 else False
-    return render_template("course.html", course=course, tests=tests, multiplechoice=multiplechoice, amount=amount)
+    return render_template("course.html", course=course, tests=tests, 
+                           multiplechoice=multiplechoice, amount=amount)
 
 @app.route("/delete/<int:id>")
 def delete(id):
