@@ -13,8 +13,7 @@ CREATE TABLE Courses (
 CREATE TABLE Content (
     id SERIAL PRIMARY KEY,
     course_id INTEGER REFERENCES Courses(id),
-    text_content TEXT,
-    pictures IMAGE);
+    text_content TEXT);
 
 CREATE TABLE Questions (
     id SERIAL PRIMARY KEY,

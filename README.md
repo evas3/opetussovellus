@@ -30,3 +30,4 @@ Sovellus käynnistetään seuraavalla komennolla
 flask run
 ```
 Tämän jälkeen käyttö luonnistuu sovelluksen antamien ohjeiden avulla.
+Huomaa että sovellus ei välttämättä toimi kunnolla jos JavaScript on kytketty pois päältä selainasetuksissa.

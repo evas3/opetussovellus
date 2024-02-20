@@ -1,0 +1,69 @@
+{% if session.teacher %}
+<title>Luo kysymys</title>
+<h1>Luo kysymys</h1>
+<form action="/add/multiple_choice/{{ id }}" method="POST" onsubmit="return check(this)">
+    Kysymys:
+    <input type="text" name="question">
+    <br>
+    Vaihtoehto 1:
+    <input type="text" name="choice1">
+    <br>
+    Vaihtoehto 2:
+    <input type="text" name="choice2">
+    <br>
+    Vaihtoehto 3:
+    <input type="text" name="choice3">
+    <br>
+    Oikea vaihtoehto:
+    <input type="radio" name="choice" value="1"> Vaihtoehto 1
+    <input type="radio" name="choice" value="2"> Vaihtoehto 2
+    <input type="radio" name="choice" value="3"> Vaihtoehto 3
+    <br>
+    <input type="submit" value="Lisää tehtävä">
+</form>
+{% else %}
+<text>Sinun tulee ensin kirjautua sisään opettajana muokataksesi kursseja</text>
+<a href="/">Kirjaudu sisään</a>
+{% endif %}
+
+<script>
+    function check(form) {
+        if (form.question.value.length > 100) {
+            alert("Kysymys on liian pitkä");
+            return false;
+        }
+        if (form.question.value.length < 5) {
+            alert("Kysymys on alle viisi merkkiä pitkä");
+            return false;
+        }
+        if (form.choice1.value.length > 100) {
+            alert("Vaihtoehto 1 on liian pitkä");
+            return false;
+        }
+        if (form.choice1.value.length < 1) {
+            alert("Vaihtoehto 1 on tyhjä");
+            return false;
+        }
+        if (form.choice2.value.length > 100) {
+            alert("Vaihtoehto 2 on liian pitkä");
+            return false;
+        }
+        if (form.choice2.value.length < 1) {
+            alert("Vaihtoehto 2 on tyhjä");
+            return false;
+        }
+        if (form.choice3.value.length > 100) {
+            alert("Vaihtoehto 3 on liian pitkä");
+            return false;
+        }
+        if (form.choice3.value.length < 1) {
+            alert("Vaihtoehto 3 on tyhjä");
+            return false;
+        }
+        if (form.choice.value == null) {
+            alert("Et ole valinnut oikeaa vastausta");
+            return false;
+        }
+        return true;
+    }
+</script>

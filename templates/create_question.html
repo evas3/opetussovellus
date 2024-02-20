@@ -1,0 +1,38 @@
+{% if session.teacher %}
+<title>Luo kysymys</title>
+<h1>Luo monivalintakysymys</h1>
+<form action="/add/question/{{ id }}" method="POST" onsubmit="return check(this)">
+    Kysymys:
+    <input type="text" name="question">
+    <br>
+    Oikea vastaus:
+    <input type="text" name="answer">
+    <br>
+    <input type="submit" value="Lisää tehtävä">
+</form>
+{% else %}
+<text>Sinun tulee ensin kirjautua sisään opettajana muokataksesi kursseja</text>
+<a href="/">Kirjaudu sisään</a>
+{% endif %}
+
+<script>
+    function check(form) {
+        if (form.question.value.length > 100) {
+            alert("Kysymys on liian pitkä");
+            return false;
+        }
+        if (form.question.value.length < 5) {
+            alert("Kysymys on alle viisi merkkiä pitkä");
+            return false;
+        }
+        if (form.answer.value.length > 20) {
+            alert("Oikea vastaus on liian pitkä");
+            return false;
+        }
+        if (form.answer.value.length < 3) {
+            alert("Oikea vastaus on alle kolme merkkiä pitkä");
+            return false;
+        }
+        return true;
+    }
+</script>

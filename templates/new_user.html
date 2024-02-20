@@ -42,6 +42,10 @@ function check(form) {
         alert("Salasanat eroavat toisistaan");
         return false;
     }
+    if (form.role.value == null) {
+        alert("Käyttäjäroolia ei ole vallittu");
+        return false;
+    }
     return true;
 }
 </script>

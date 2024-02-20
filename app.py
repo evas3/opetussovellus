@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import render_template, request, redirect, session
+from flask import render_template, request, redirect, session, flash
 from flask_sqlalchemy import SQLAlchemy
 from os import getenv
 from sqlalchemy.sql import text
@@ -95,10 +95,18 @@ def logout():
 
 @app.route("/courses/<int:id>")
 def course(id):
+    sql_tests = "SELECT ROW_NUMBER() OVER(ORDER BY id) AS num_row, question FROM Questions WHERE course_id=:id"
+    execute_tests = db.session.execute(text(sql_tests), {"id":id})
+    tests = execute_tests.fetchall()
+    sql_multiplechoice_tests = "SELECT ROW_NUMBER() OVER(ORDER BY id) AS num_row, question, choice1, choice2, choice3 FROM Multiple_choice WHERE course_id=:id"
+    execute_multiplechoice = db.session.execute(text(sql_multiplechoice_tests), {"id":id})
+    multiplechoice = execute_multiplechoice.fetchall()
     sql = "SELECT coursename, id FROM Courses WHERE id=:id"
     execute = db.session.execute(text(sql), {"id":id})
     course = execute.fetchone()
-    return render_template("course.html", course=course)
+    amount = True if (len(tests) + len(multiplechoice)) > 0 else False
+    sql_done = "SELECT "
+    return render_template("course.html", course=course, tests=tests, multiplechoice=multiplechoice, amount=amount)
 
 @app.route("/delete/<int:id>")
 def delete(id):
@@ -110,10 +118,68 @@ def delete(id):
             sql = "DELETE FROM Courses WHERE id=:id"
             db.session.execute(text(sql), {"id":id})
             db.session.commit()
-    return redirect("/courses")
+            return redirect("/courses")
+    message = "Sinun täytyy olla tämän kurssin opettaja poistaaksesi kurssin"
+    direct = "/courses"+str(id)
+    return render_template("error.html", message=message, direct=direct)
 
 @app.route("/edit/<int:id>")
 def edit(id):
     if session["teacher"]:
-        sql = ""
-    return redirect("/courses/"+str(id))
+        sql = "SELECT teacher FROM Courses WHERE id=:id"
+        execute = db.session.execute(text(sql), {"id":id})
+        teacher = execute.fetchone()[0]
+        if teacher == session["usersname"]:
+            return redirect("/courses/"+str(id))
+    message = "Sinun täytyy olla tämän kurssin opettaja muokataksesi kurssia"
+    direct = "/courses"+str(id)
+    return render_template("error.html", message=message, direct=direct)
+
+@app.route("/create/question/<int:id>")
+def create_question(id):
+    return render_template("create_question.html", id=id)
+
+@app.route("/create/multiple_choice/<int:id>")
+def create_multiple_choice(id):
+    return render_template("create_multiple_choice.html", id=id)
+
+@app.route("/add/question/<int:id>", methods=["POST"])
+def add_question(id):
+    if session["teacher"]:
+        sql = "SELECT teacher FROM Courses WHERE id=:id"
+        execute = db.session.execute(text(sql), {"id":id})
+        teacher = execute.fetchone()[0]
+        if teacher == session["usersname"]:
+            question = request.form["question"]
+            answer = request.form["answer"]
+            sql = "INSERT INTO Questions (course_id, question, answer) VALUES (:course_id, :question, :answer)"
+            db.session.execute(text(sql), {"course_id":id, "question":question, "answer":answer})
+            db.session.commit()
+            return redirect("/courses/"+str(id))
+    message = "Sinun täytyy olla tämän kurssin opettaja lisätäksesi kurssille tehtäviä"
+    direct = "/courses"+str(id)
+    return render_template("error.html", message=message, direct=direct)
+
+@app.route("/add/multiple_choice/<int:id>", methods=["POST"])
+def add_multiple_choice(id):
+    if session["teacher"]:
+        sql = "SELECT teacher FROM Courses WHERE id=:id"
+        execute = db.session.execute(text(sql), {"id":id})
+        teacher = execute.fetchone()[0]
+        if teacher == session["usersname"]:
+            question = request.form["question"]
+            choice1 = request.form["choice1"]
+            choice2 = request.form["choice2"]
+            choice3 = request.form["choice3"]
+            answer = request.form["choice"]
+            sql = "INSERT INTO Multiple_choice (course_id, question, choice1, choice2, choice3, answer) VALUES (:course_id, :question, :choice1, :choice2, :choice3, :answer)"
+            db.session.execute(text(sql), {"course_id":id, "question":question, "choice1":choice1, "choice2":choice2, "choice3":choice3, "answer":answer})
+            db.session.commit()
+            return redirect("/courses/"+str(id))
+    message = "Sinun täytyy olla tämän kurssin opettaja lisätäksesi kurssille tehtäviä"
+    direct = "/courses"+str(id)
+    return render_template("error.html", message=message, direct=direct)
+
+@app.route("/submit_exercises/<int:id>", methods=["POST"])
+def submit_exercises(id):
+    return redirect("/courses")
