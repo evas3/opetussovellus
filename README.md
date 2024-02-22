@@ -9,7 +9,7 @@ Käyttäjän tulee kirjautua sisään ennen kun tämä pääsee käyttämään s
 Kloonaa repositio ja luo kloonaamaasi kansioon .env-tiedosto. Tiedostosta tulee löytyä seuraavat  määrittelyt:
 
 DATABASE_URL=postgresql:///(käyttäjänimi) jossa käyttäjänimi tulee korvata omalla käyttäjänimelläsi sekä
-SECRET_KEY=(itse generoimasi salainen avain)
+SEC_KEY=(itse generoimasi salainen avain)
 
 Tarvittavien riippuvuuksien ja virtuaaliympäristön asentaminen onnistuu seuraavin komennoin:
 ```
