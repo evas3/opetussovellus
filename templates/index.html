@@ -1,3 +1,9 @@
+{% for message in get_flashed_messages() %}
+    <div id="popup">
+        {{ message }}
+        <button onclick="hide()">X</button>
+    </div>
+{% endfor %}
 <title>Etusivu</title>
 <h1>Etusivu</h1>
 <text>Tervetuloa opetussovellukseen. Kirjaudu sisään jatkaaksesi</text>
@@ -26,5 +32,9 @@ function check(form) {
         return false;
     }
     return true;
+}
+function hide() {
+    var popup = document.getElementById("popup");
+    popup.style.display = "none";
 }
 </script>

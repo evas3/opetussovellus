@@ -1,3 +1,9 @@
+{% for message in get_flashed_messages() %}
+    <div id="popup">
+        {{ message }}
+        <button onclick="hide()">X</button>
+    </div>
+{% endfor %}
 {% if session.usersname %}
     <title>Tervetuloa</title>
     <h1>Tervetuloa {{ session.usersname }}!</h1>
@@ -23,3 +29,10 @@
     <text>Sinun tulee ensin kirjautua sisään nähdäksesi kurssit</text>
     <a href="/">Kirjaudu sisään</a>
 {% endif %}
+
+<script>
+function hide() {
+    var popup = document.getElementById("popup");
+    popup.style.display = "none";
+}
+</script>

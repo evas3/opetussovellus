@@ -46,7 +46,7 @@ def course_added():
     course_name = request.form["course_name"]
     teacher = session["usersname"]
     sql_modify_tables.new_course(course_name, teacher)
-    flash("Kurssi "+course_added+" lisätty")
+    flash("Kurssi "+course_name+" lisätty")
     return redirect("\courses")
 
 @app.route("/user_created", methods=["POST"])
@@ -62,7 +62,8 @@ def user_created():
             hashed = generate_password_hash(keyword)
             role_boolean = True if student == "1" else False
             sql_modify_tables.new_user(usersname, hashed, role_boolean)
-            return render_template("user_created.html")
+            flash("Uusi käyttäjä luotu")
+            return redirect("/")
         message = "Käyttäjätunnus on jo käytössä"
         return render_template("error.html", message=message, direct=direct)
     message = "Kenttiin annetut salasanat eroavat toisistaan"
@@ -72,6 +73,7 @@ def user_created():
 def logout():
     del session["usersname"]
     session["teacher"] = False
+    flash("Sinut on kirjattu ulos")
     return redirect("/")
 
 @app.route("/courses/<int:id>")
@@ -89,6 +91,7 @@ def delete(id):
         teacher = sql_queries.check_teacher(id)
         if teacher == session["usersname"]:
             sql_modify_tables.delete_course(id)
+            flash("Kurssi poistettu")
             return redirect("/courses")
     message = "Sinun täytyy olla tämän kurssin opettaja poistaaksesi kurssin"
     direct = "/courses"+str(id)
