@@ -30,9 +30,14 @@ CREATE TABLE Multiple_choice (
     choice3 TEXT,
     answer INTEGER);
 
-CREATE TABLE Answered (
+CREATE TABLE AnsweredQuestions (
     id SERIAL PRIMARY KEY,
     course_id INTEGER REFERENCES Courses(id),
-    text_question BOOLEAN,
-    question_id INTEGER,
-    student TEXT);
+    question_id INTEGER REFERENCES Questions(id),
+    student TEXT REFERENCES Users(username));
+
+CREATE TABLE AnsweredMultiple_choice (
+    id SERIAL PRIMARY KEY,
+    course_id INTEGER REFERENCES Courses(id),
+    question_id INTEGER REFERENCES Multiple_choice(id),
+    student TEXT REFERENCES Users(username));

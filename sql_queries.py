@@ -50,3 +50,17 @@ def check_teacher(id):
     execute = db.session.execute(text(sql), {"id":id})
     teacher = execute.fetchone()[0]
     return teacher
+
+def answers(id):
+    sql = """SELECT Questions.answer, Questions.course_id FROM Questions INNER JOIN Courses ON
+             Courses.id=Questions.course.id WHERE Courses.id=:id ORDER BY Questions.id"""
+    execute = db.session.execute(text(sql), {"id":id})
+    answers = execute.fetchall()
+    return answers
+
+def multiplechoice_answers(id):
+    sql = """SELECT Multiple_choice.answer, Multiple_choice.course_id FROM Multiple_choice INNER JOIN Courses ON
+             Courses.id=Multiple_choice.course.id WHERE Courses.id=:id ORDER BY Multiple_choice.id"""
+    execute = db.session.execute(text(sql), {"id":id})
+    answers = execute.fetchall()
+    return answers

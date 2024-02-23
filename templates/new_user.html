@@ -1,5 +1,6 @@
 <title>Uusi käyttäjä</title>
 <h1>Luo uusi käyttäjä</h1>
+<p>Tunnuksen tulee olla ainakin kolmen merkin pituinen eikä salasanassa saa olla alle viittä merkkiä.</p>
 <form action="/user_created" method="POST" onsubmit="return check(this)">
     Anna käyttäjätunnus:
     <input type="text" name="name">
@@ -23,11 +24,11 @@
 <script>
 function check(form) {
     if (form.name.value.length > 25) {
-        alert("Käyttäjänimi on liian pitkä");
+        alert("Käyttäjätunnus on liian pitkä");
         return false;
     }
     if (form.name.value.length < 3) {
-        alert("Käyttäjänimen tulee olla ainakin kolmen merkin pituinen");
+        alert("Käyttäjätunnuksen tulee olla ainakin kolmen merkin pituinen");
         return false;
     }
     if (form.keyw.value.length > 40) {

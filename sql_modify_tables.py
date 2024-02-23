@@ -12,8 +12,25 @@ def new_course(name, teacher):
     db.session.commit()
 
 def delete_course(id):
-    sql = "DELETE FROM Courses WHERE id=:id"
+    sql = """DELETE FROM Courses JOIN Content ON Courses.id=Content.course_id JOIN Questions
+             ON Courses.id=Questions.course_id JOIN Multiple_choice ON Courses.id=Multiple_choice.course_id
+             JOIN AnsweredQuestions ON Courses.id=AnsweredQuestions.course_id JOIN AnsweredMultiple_choice
+             ON Courses.id=AnsweredMultiple_choice.course_id WHERE Courses.id=:id"""
     db.session.execute(text(sql), {"id":id})
+    db.session.commit()
+
+def delete_multiplechoices(course_id):
+    sql = "DELETE FROM Multiple_choice WHERE course_id=:course_id"
+    db.session.execute(text(sql), {"course_id":course_id})
+    sql = "DELETE FROM AnsweredMultiple_choice WHERE course_id=:course_id"
+    db.session.execute(text(sql), {"course_id":course_id})
+    db.session.commit()
+
+def delete_questions(course_id):
+    sql = "DELETE FROM Questions WHERE course_id=:course_id"
+    db.session.execute(text(sql), {"course_id":course_id})
+    sql = "DELETE FROM AnsweredQuestions WHERE course_id=:course_id"
+    db.session.execute(text(sql), {"course_id":course_id})
     db.session.commit()
 
 def new_question(id, question, answer):
@@ -25,4 +42,14 @@ def new_choice(id, question, choice1, choice2, choice3, answer):
     sql = """INSERT INTO Multiple_choice (course_id, question, choice1, choice2, choice3, answer) VALUES
              (:course_id, :question, :choice1, :choice2, :choice3, :answer)"""
     db.session.execute(text(sql), {"course_id":id, "question":question, "choice1":choice1, "choice2":choice2, "choice3":choice3, "answer":answer})
+    db.session.commit()
+
+def correct(course_id, question_id, student):
+    sql = "INSERT INTO AnsweredQuestions (course_id, question_id, student) VALUES (:course_id, :question_id, :student)"
+    db.session.execute(text(sql), {"course_id":course_id, "question_id":question_id, "student":student})
+    db.session.commit()
+
+def correct_multiple_choice(course_id, question_id, student):
+    sql = "INSERT INTO AnsweredMultiple_choice (course_id, question_id, student) VALUES (:course_id, :question_id, :student)"
+    db.session.execute(text(sql), {"course_id":course_id, "question_id":question_id, "student":student})
     db.session.commit()

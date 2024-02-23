@@ -13,7 +13,7 @@ Tehtävä{{ test[0] }}: {{ test[1] }}
 
 {% for m_test in multiplechoice %}
 <br>
-Tehtävä{{ m_test[0] }}: {{ m_test[1] }}
+Monivalinta tehtävä{{ m_test[0] }}: {{ m_test[1] }}
 <p>
     <input type="radio" name="m_answer{{ m_test[0] }}" value="1"> {{ m_test[2] }}
     <input type="radio" name="m_answer{{ m_test[0] }}" value="2"> {{ m_test[3] }}

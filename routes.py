@@ -46,7 +46,8 @@ def course_added():
     course_name = request.form["course_name"]
     teacher = session["usersname"]
     sql_modify_tables.new_course(course_name, teacher)
-    return render_template("course_added.html", course_name=course_name)
+    flash("Kurssi "+course_added+" lisätty")
+    return redirect("\courses")
 
 @app.route("/user_created", methods=["POST"])
 def user_created():
@@ -142,4 +143,13 @@ def add_multiple_choice(id):
 
 @app.route("/submit_exercises/<int:id>", methods=["POST"])
 def submit_exercises(id):
+    answers = sql_queries.answers(id)
+    wrong = []
+    row_number = 1
+    for answer in answers:
+        input = request.form["answer"+str(row_number)]
+        if input != answer[0]:
+            wrong.append(row_number)
+        else:
+            sql_modify_tables.correct(id, answer[1], )
     return redirect("/courses")
