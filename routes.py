@@ -80,16 +80,17 @@ def logout():
 def course(id):
     tests = sql_queries.tests(id)
     multiplechoice = sql_queries.multiplechoice_tests(id)
-    course = sql_queries.spesific_course(id)
+    course = sql_queries.spesific_course(id)                                                                                                                        
     amount = True if (len(tests) + len(multiplechoice)) > 0 else False
-    return render_template("course.html", course=course, tests=tests, 
-                           multiplechoice=multiplechoice, amount=amount)
+    return render_template("course.html", course=course, amount=amount)
 
 @app.route("/delete/<int:id>")
 def delete(id):
     if session["teacher"]:
         teacher = sql_queries.check_teacher(id)
         if teacher == session["usersname"]:
+            sql_modify_tables.delete_multiplechoices(id)
+            sql_modify_tables.delete_questions(id)
             sql_modify_tables.delete_course(id)
             flash("Kurssi poistettu")
             return redirect("/courses")
@@ -106,6 +107,13 @@ def edit(id):
     message = "Sinun täytyy olla tämän kurssin opettaja muokataksesi kurssia"
     direct = "/courses"+str(id)
     return render_template("error.html", message=message, direct=direct)
+
+@app.route("/courses/<int:course_id>/exercises")
+def exercises(course_id):
+    tests = sql_queries.tests(course_id)
+    multiplechoice = sql_queries.multiplechoice_tests(course_id)
+    course = sql_queries.spesific_course(course_id)
+    return render_template("exercises.html", course=course, tests=tests, multiplechoice=multiplechoice)
 
 @app.route("/create/question/<int:id>")
 def create_question(id):
@@ -144,15 +152,34 @@ def add_multiple_choice(id):
     direct = "/courses"+str(id)
     return render_template("error.html", message=message, direct=direct)
 
-@app.route("/submit_exercises/<int:id>", methods=["POST"])
-def submit_exercises(id):
-    answers = sql_queries.answers(id)
-    wrong = []
-    row_number = 1
-    for answer in answers:
-        input = request.form["answer"+str(row_number)]
-        if input != answer[0]:
-            wrong.append(row_number)
-        else:
-            sql_modify_tables.correct(id, answer[1], )
-    return redirect("/courses")
+@app.route("/submit/question/<int:id>/<int:exercise_id>", methods=["POST"])
+def submit_question(id, exercise_id):
+    answer = sql_queries.question_answer(exercise_id)
+    input = request.form["answer"]
+    if answer == input:
+        flash("Vastasit oikein tehtävään "+str(exercise_id))
+        return redirect("/courses/"+str(id)+"/exercises")
+    flash("Vastasit väärin tehtävään "+str(exercise_id))
+    return redirect("/courses/"+str(id)+"/exercises")
+
+@app.route("/submit/multiplechoice/<int:id>/<int:exercise_id>", methods=["POST"])
+def submit_multiple_choice(id, exercise_id):
+    answer = sql_queries.multiplechoice_answer(exercise_id)
+    input = request.form["answer"]
+    if answer == input:
+        flash("Vastasit oikein monivalintatehtävään "+str(exercise_id))
+        return redirect("/courses/"+str(id)+"/exercises")
+    flash("Vastasit väärin monivalintatehtävään "+str(exercise_id))
+    return redirect("/courses/"+str(id)+"/exercises")
+
+@app.route("/delete/question/<int:id>/<int:exercise_id>")
+def delete_question(id, exercise_id):
+    sql_modify_tables.delete_question(exercise_id)
+    flash("Tehtävä poistettu")
+    return redirect("/courses/"+str(id)+"/exercises")
+
+@app.route("/delete/multiple_choice/<int:id>/<int:exercise_id>")
+def delete_multiple_choice(id, exercise_id):
+    sql_modify_tables.delete_multiplechoice(exercise_id)
+    flash("Tehtävä poistettu")
+    return redirect("/courses/"+str(id)+"/exercises")

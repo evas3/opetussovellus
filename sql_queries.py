@@ -26,14 +26,14 @@ def check_username(usersname):
     return users
 
 def tests(id):
-    sql_tests = """SELECT ROW_NUMBER() OVER(ORDER BY id) AS num_row, question FROM Questions
+    sql_tests = """SELECT id, question FROM Questions
                    WHERE course_id=:id"""
     execute_tests = db.session.execute(text(sql_tests), {"id":id})
     tests = execute_tests.fetchall()
     return tests
 
 def multiplechoice_tests(id):
-    sql_multiplechoice = """SELECT ROW_NUMBER() OVER(ORDER BY id) AS num_row, question,
+    sql_multiplechoice = """SELECT id, question,
                             choice1, choice2, choice3 FROM Multiple_choice WHERE course_id=:id"""
     execute_multiplechoice = db.session.execute(text(sql_multiplechoice), {"id":id})
     multiplechoice = execute_multiplechoice.fetchall()
@@ -51,16 +51,14 @@ def check_teacher(id):
     teacher = execute.fetchone()[0]
     return teacher
 
-def answers(id):
-    sql = """SELECT Questions.answer, Questions.course_id FROM Questions INNER JOIN Courses ON
-             Courses.id=Questions.course.id WHERE Courses.id=:id ORDER BY Questions.id"""
+def question_answer(id):
+    sql = "SELECT answer, course_id FROM Questions WHERE id=:id"
     execute = db.session.execute(text(sql), {"id":id})
     answers = execute.fetchall()
     return answers
 
-def multiplechoice_answers(id):
-    sql = """SELECT Multiple_choice.answer, Multiple_choice.course_id FROM Multiple_choice INNER JOIN Courses ON
-             Courses.id=Multiple_choice.course.id WHERE Courses.id=:id ORDER BY Multiple_choice.id"""
+def multiplechoice_answer(id):
+    sql = "SELECT answer, course_id FROM Multiple_choice WHERE id=:id"
     execute = db.session.execute(text(sql), {"id":id})
     answers = execute.fetchall()
     return answers

@@ -1,49 +1,29 @@
 {% if session.usersname %}
-<title> {{course[0]}} </title>
-<h1> {{course[0]}} </h1>
-<h2>Testit:</h2>
-<form action="/submit_exercises/{{ course[1] }}" method="POST">
-{% for test in tests %}
-<br>
-Tehtävä{{ test[0] }}: {{ test[1] }}
-<br>
-<input type="text" name="answer{{ test[0] }}">
-<br>
-{% endfor %}
-
-{% for m_test in multiplechoice %}
-<br>
-Monivalinta tehtävä{{ m_test[0] }}: {{ m_test[1] }}
-<p>
-    <input type="radio" name="m_answer{{ m_test[0] }}" value="1"> {{ m_test[2] }}
-    <input type="radio" name="m_answer{{ m_test[0] }}" value="2"> {{ m_test[3] }}
-    <input type="radio" name="m_answer{{ m_test[0] }}" value="3"> {{ m_test[4] }}
-</p>
-<br>
-{% endfor %}
-
-{% if amount %}
-<input type="submit" value="Vastaa">
-{% endif %}
-</form>
-
-{% if session.teacher %}
-<text>Muokkaa kurssia:</text>
-<a href="/edit/{{course[1]}}">Muokkaa</a>
-<br>
-<text>Poista kurssi:</text>
-<a href="/delete/{{course[1]}}">Poista</a>
-<br>
-<text>Lisää kirjallinen tehtävä:</text>
-<a href="/create/question/{{course[1]}}">Lisää</a>
-<br>
-<text>Lisää monivalinta tehtävä:</text>
-<a href="/create/multiple_choice/{{course[1]}}">Lisää</a>
-<br>
-{% endif %}
+    <title> {{course[0]}} </title>
+    <h1> {{course[0]}} </h1>
+    {% if amount %}
+    <br>
+    Kun olet sisäistänyt kurssimateriaalin voit jatkaa kurssitehtäviin: 
+    <a href="/courses/{{course[1]}}/exercises">Kurssitehtävät</a>
+    <br>
+    {% endif %}
+    {% if session.teacher %}
+        <text>Muokkaa kurssia:</text>
+        <a href="/edit/{{course[1]}}">Muokkaa</a>
+        <br>
+        <text>Poista kurssi:</text>
+        <a href="/delete/{{course[1]}}">Poista</a>
+        <br>
+        <text>Lisää kirjallinen tehtävä:</text>
+        <a href="/create/question/{{course[1]}}">Lisää</a>
+        <br>
+        <text>Lisää monivalinta tehtävä:</text>
+        <a href="/create/multiple_choice/{{course[1]}}">Lisää</a>
+        <br>
+    {% endif %}
 {% else %}
-<text>Sinun tulee ensin kirjautua sisään nähdäksesi kurssit</text>
-<a href="/">Kirjaudu sisään</a>
+    <text>Sinun tulee ensin kirjautua sisään nähdäksesi kurssit</text>
+    <a href="/">Kirjaudu sisään</a>
 {% endif %}
 
 <script>

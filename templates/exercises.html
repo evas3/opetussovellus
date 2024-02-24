@@ -1,0 +1,51 @@
+{% for message in get_flashed_messages() %}
+    <div id="popup">
+        {{ message }}
+        <button onclick="hide()">X</button>
+    </div>
+{% endfor %}
+{% if session.usersname %}
+    <h1>Kurssin {{course[0]}} tehtävät</h1>
+    {% for test in tests %}
+        <form action="/submit/question/{{ course[1] }}/{{ test[0] }}" method="POST">
+            Tehtävä{{ test[0] }}: {{ test[1] }}
+            <br>
+            <input type="text" name="answer">
+            <br>
+            <input type="submit" value="Vastaa">
+        </form>
+        {% if session.teacher %}
+            <text>Poista tehtävä:</text>
+            <a href="/delete/question/{{ course[1] }}/{{ test[0] }}">Poista</a>
+            <br>
+        {% endif %}
+    {% endfor %}
+    {% for m_test in multiplechoice %}
+        <form action="/submit/multiple_choice/{{ course[1] }}/{{ m_test[0] }}" method="POST">
+            <br>
+            Monivalintatehtävä{{ m_test[0] }}: {{ m_test[1] }}
+            <p>
+                <input type="radio" name="m_answer" value="1"> {{ m_test[2] }}
+                <input type="radio" name="m_answer" value="2"> {{ m_test[3] }}
+                <input type="radio" name="m_answer" value="3"> {{ m_test[4] }}
+            </p>
+            <br>
+            <input type="submit" value="Vastaa">
+        </form>
+        {% if session.teacher %}
+            <text>Poista tehtävä:</text>
+            <a href="/delete/multiple_choice/{{ course[1] }}/{{ m_test[0] }}">Poista</a>
+            <br>
+        {% endif %}
+    {% endfor %}
+{% else %}
+    <text>Sinun tulee ensin kirjautua sisään nähdäksesi kurssit</text>
+    <a href="/">Kirjaudu sisään</a>
+{% endif %}
+
+<script>
+function hide() {
+    var popup = document.getElementById("popup");
+    popup.style.display = "none";
+}
+</script>
