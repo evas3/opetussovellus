@@ -1,7 +1,13 @@
 {% if session.usersname %}
     <title> {{course[0]}} </title>
     <h1> {{course[0]}} </h1>
-    {% if amount %}
+    {% if amount[1] %}
+        {% for text in content %}
+            <text> {{text[0]}} </text>
+            <br>
+        {% endfor %}
+    {% endif %}
+    {% if amount[0] %}
     <br>
     Kun olet sisäistänyt kurssimateriaalin voit jatkaa kurssitehtäviin: 
     <a href="/courses/{{course[1]}}/exercises">Kurssitehtävät</a>

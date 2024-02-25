@@ -1,6 +1,6 @@
 {% if session.teacher %}
-    <title>Luo kysymys</title>
-    <h1>Luo kysymys</h1>
+    <title>Luo monivalintatehtävä</title>
+    <h1>Luo monivalintatehtävä</h1>
     <form action="/add/multiple_choice/{{ id }}" method="POST" onsubmit="return check(this)">
         Kysymys:
         <input type="text" name="question">

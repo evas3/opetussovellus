@@ -44,8 +44,11 @@ def create_course():
 @app.route("/course_added", methods=["POST"])
 def course_added():
     course_name = request.form["course_name"]
+    content = request.form["content"]
     teacher = session["usersname"]
     sql_modify_tables.new_course(course_name, teacher)
+    course_id = sql_queries.course_id(course_name, teacher)
+    sql_modify_tables.add_content(course_id, content)
     flash("Kurssi "+course_name+" lisätty")
     return redirect("\courses")
 
@@ -80,9 +83,10 @@ def logout():
 def course(id):
     tests = sql_queries.tests(id)
     multiplechoice = sql_queries.multiplechoice_tests(id)
-    course = sql_queries.spesific_course(id)                                                                                                                        
-    amount = True if (len(tests) + len(multiplechoice)) > 0 else False
-    return render_template("course.html", course=course, amount=amount)
+    course = sql_queries.spesific_course(id)
+    content = sql_queries.content(id)                                                                                                                      
+    amount = (True if (len(tests) + len(multiplechoice)) > 0 else False, True if len(content)>0 else False)
+    return render_template("course.html", course=course, amount=amount, content=content)
 
 @app.route("/delete/<int:id>")
 def delete(id):

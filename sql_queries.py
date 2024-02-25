@@ -62,3 +62,15 @@ def multiplechoice_answer(id):
     execute = db.session.execute(text(sql), {"id":id})
     answers = execute.fetchall()
     return answers
+
+def course_id(course_name, teacher):
+    sql = "SELECT id FROM Courses WHERE coursename=:name AND teacher=:teacher"
+    execute = db.session.execute(text(sql), {"name":course_name, "teacher":teacher})
+    id = execute.fetchone()
+    return id[0]
+
+def content(id):
+    sql = "SELECT text_content FROM Content WHERE course_id=:course_id"
+    execute = db.session.execute(text(sql), {"course_id":id})
+    content = execute.fetchall()
+    return content

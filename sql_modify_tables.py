@@ -64,3 +64,8 @@ def delete_multiplechoice(question_id):
     sql = "DELETE FROM Multiple_choice WHERE id=:id"
     db.session.execute(text(sql), {"id":question_id})
     db.session.commit()
+
+def add_content(course_id, content):
+    sql = "INSERT INTO Content (course_id, text_content) VALUES (:course_id, :text_content)"
+    db.session.execute(text(sql), {"course_id":course_id, "text_content":content})
+    db.session.commit()
