@@ -6,16 +6,16 @@ def new_user(username, password, role):
     db.session.execute(text(sql), {"usersname":username, "keyword":password, "role_boolean":role})
     db.session.commit()
 
-def new_course(name, teacher):
+def new_course(course_name, teacher):
     sql = "INSERT INTO Courses (coursename, teacher, students) VALUES (:course_name, :teacher, NULL)"
-    db.session.execute(text(sql), {"course_name":name, "teacher":teacher})
+    db.session.execute(text(sql), {"course_name":course_name, "teacher":teacher})
     db.session.commit()
 
-def delete_course(id):
+def delete_course(course_id):
     sql = "DELETE FROM Content WHERE course_id=:id"
-    db.session.execute(text(sql), {"id":id})
+    db.session.execute(text(sql), {"id":course_id})
     sql = "DELETE FROM Courses WHERE Courses.id=:id"
-    db.session.execute(text(sql), {"id":id})
+    db.session.execute(text(sql), {"id":course_id})
     db.session.commit()
 
 def delete_multiplechoices(course_id):
