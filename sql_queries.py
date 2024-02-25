@@ -74,3 +74,9 @@ def content(id):
     execute = db.session.execute(text(sql), {"course_id":id})
     content = execute.fetchall()
     return content
+
+def check_coursename(coursename):
+    sql = "SELECT id FROM Courses WHERE coursename=:coursename"
+    execute = db.session.execute(text(sql), {"coursename":coursename})
+    ids = execute.fetchone()
+    return ids

@@ -12,6 +12,8 @@ def new_course(name, teacher):
     db.session.commit()
 
 def delete_course(id):
+    sql = "DELETE FROM Content WHERE course_id=:id"
+    db.session.execute(text(sql), {"id":id})
     sql = "DELETE FROM Courses WHERE Courses.id=:id"
     db.session.execute(text(sql), {"id":id})
     db.session.commit()

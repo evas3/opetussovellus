@@ -1,3 +1,9 @@
+{% for message in get_flashed_messages() %}
+    <div id="popup">
+        {{ message }}
+        <button onclick="hide()">X</button>
+    </div>
+{% endfor %}
 {% if session.usersname %}
     <title> {{course[0]}} </title>
     <h1> {{course[0]}} </h1>
@@ -43,5 +49,9 @@
             return false;
         }
         return true;
+    }
+    function hide() {
+        var popup = document.getElementById("popup");
+        popup.style.display = "none";
     }
 </script>

@@ -21,9 +21,8 @@ def user():
             else:
                 session["teacher"] = True
             return redirect("/courses")
-    message = "Käyttäjätunnus tai salasana on väärä"
-    direct = "/"
-    return render_template("error.html", message=message, direct=direct)
+    flash("Käyttäjätunnus tai salasana on väärä")
+    return redirect("/")
 
 @app.route("/courses")
 def courses():
@@ -43,20 +42,26 @@ def create_course():
 
 @app.route("/course_added", methods=["POST"])
 def course_added():
-    course_name = request.form["course_name"]
-    content = request.form["content"]
-    teacher = session["usersname"]
-    sql_modify_tables.new_course(course_name, teacher)
-    course_id = sql_queries.course_id(course_name, teacher)
-    sql_modify_tables.add_content(course_id, content)
-    flash("Kurssi "+course_name+" lisätty")
-    return redirect("\courses")
+    if session["teacher"]:
+        course_name = request.form["course_name"]
+        ids = sql_queries.check_coursename(course_name)
+        if ids is None:
+            content = request.form["content"]
+            teacher = session["usersname"]
+            sql_modify_tables.new_course(course_name, teacher)
+            course_id = sql_queries.course_id(course_name, teacher)
+            sql_modify_tables.add_content(course_id, content)
+            flash("Kurssi "+course_name+" lisätty")
+            return redirect("\courses")
+        flash("Kurssinimi on jo käytössä")
+        return redirect("/create_course")
+    flash("Sinun tulee ensin kirjautua sisään opettajana lisätäksesi kurssin")
+    return redirect("/")
 
 @app.route("/user_created", methods=["POST"])
 def user_created():
     keyword = request.form["keyw"]
     keyword2 = request.form["keyw_redone"]
-    direct = "/create_user"
     if keyword == keyword2:
         usersname = request.form["name"]
         users = sql_queries.check_username(usersname)
@@ -67,10 +72,10 @@ def user_created():
             sql_modify_tables.new_user(usersname, hashed, role_boolean)
             flash("Uusi käyttäjä luotu")
             return redirect("/")
-        message = "Käyttäjätunnus on jo käytössä"
-        return render_template("error.html", message=message, direct=direct)
-    message = "Kenttiin annetut salasanat eroavat toisistaan"
-    return render_template("error.html", message=message, direct=direct)
+        flash("Käyttäjätunnus on jo käytössä")
+        return redirect("/create_user")
+    flash("Kenttiin annetut salasanat eroavat toisistaan")
+    return redirect("/create_user")
 
 @app.route("/logout")
 def logout():
@@ -98,19 +103,18 @@ def delete(id):
             sql_modify_tables.delete_course(id)
             flash("Kurssi poistettu")
             return redirect("/courses")
-    message = "Sinun täytyy olla tämän kurssin opettaja poistaaksesi kurssin"
-    direct = "/courses"+str(id)
-    return render_template("error.html", message=message, direct=direct)
+    flash("Sinun täytyy olla tämän kurssin opettaja poistaaksesi kurssin")
+    return redirect("/courses/"+str(id))
 
 @app.route("/edit/<int:id>")
 def edit(id):
     if session["teacher"]:
         teacher = sql_queries.check_teacher(id)
         if teacher == session["usersname"]:
+            flash("Kurssia muokattu")
             return redirect("/courses/"+str(id))
-    message = "Sinun täytyy olla tämän kurssin opettaja muokataksesi kurssia"
-    direct = "/courses"+str(id)
-    return render_template("error.html", message=message, direct=direct)
+    flash("Sinun täytyy olla tämän kurssin opettaja muokataksesi kurssia")
+    return redirect("/courses/"+str(id))
 
 @app.route("/courses/<int:course_id>/exercises")
 def exercises(course_id):
@@ -135,10 +139,10 @@ def add_question(id):
             question = request.form["question"]
             answer = request.form["answer"]
             sql_modify_tables.new_question(id, question, answer)
+            flash("Tehtävä lisätty")
             return redirect("/courses/"+str(id))
-    message = "Sinun täytyy olla tämän kurssin opettaja lisätäksesi kurssille tehtäviä"
-    direct = "/courses"+str(id)
-    return render_template("error.html", message=message, direct=direct)
+    flash("Sinun täytyy olla tämän kurssin opettaja lisätäksesi kurssille tehtäviä")
+    return redirect("/courses/"+str(id))
 
 @app.route("/add/multiple_choice/<int:id>", methods=["POST"])
 def add_multiple_choice(id):
@@ -151,10 +155,10 @@ def add_multiple_choice(id):
             choice3 = request.form["choice3"]
             answer = request.form["choice"]
             sql_modify_tables.new_choice(id, question, choice1, choice2, choice3, answer)
+            flash("Monivalintatehtävä lisätty")
             return redirect("/courses/"+str(id))
-    message = "Sinun täytyy olla tämän kurssin opettaja lisätäksesi kurssille tehtäviä"
-    direct = "/courses"+str(id)
-    return render_template("error.html", message=message, direct=direct)
+    flash("Sinun täytyy olla tämän kurssin opettaja lisätäksesi kurssille tehtäviä")
+    return redirect("/courses/"+str(id))
 
 @app.route("/submit/question/<int:id>/<int:exercise_id>", methods=["POST"])
 def submit_question(id, exercise_id):
@@ -180,12 +184,22 @@ def submit_multiple_choice(id, exercise_id):
 
 @app.route("/delete/question/<int:id>/<int:exercise_id>")
 def delete_question(id, exercise_id):
-    sql_modify_tables.delete_question(exercise_id)
-    flash("Tehtävä poistettu")
+    if session["teacher"]:
+        teacher = sql_queries.check_teacher(id)
+        if teacher == session["usersname"]:
+            sql_modify_tables.delete_question(exercise_id)
+            flash("Tehtävä poistettu")
+            return redirect("/courses/"+str(id)+"/exercises")
+    flash("Sinun täytyy olla tämän kurssin opettaja poistaaksesi kurssin tehtäviä")
     return redirect("/courses/"+str(id)+"/exercises")
 
 @app.route("/delete/multiple_choice/<int:id>/<int:exercise_id>")
 def delete_multiple_choice(id, exercise_id):
-    sql_modify_tables.delete_multiplechoice(exercise_id)
-    flash("Tehtävä poistettu")
+    if session["teacher"]:
+        teacher = sql_queries.check_teacher(id)
+        if teacher == session["usersname"]:
+            sql_modify_tables.delete_multiplechoice(exercise_id)
+            flash("Tehtävä poistettu")
+            return redirect("/courses/"+str(id)+"/exercises")
+    flash("Sinun täytyy olla tämän kurssin opettaja poistaaksesi kurssin tehtäviä")
     return redirect("/courses/"+str(id)+"/exercises")

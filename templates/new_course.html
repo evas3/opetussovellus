@@ -1,11 +1,17 @@
-{% if session.usersname and session.teacher%}
+{% for message in get_flashed_messages() %}
+    <div id="popup">
+        {{ message }}
+        <button onclick="hide()">X</button>
+    </div>
+{% endfor %}
+{% if session.teacher%}
     <title>Uusi kurssi</title>
     <h1>Uusi kurssi</h1>
     <form action="/course_added" method="POST" onsubmit="return check(this)">
         Kurssin nimi:
         <input type="text" name="course_name">
         <br>
-        Kurrssisisältö:
+        Kurrssin sisältö:
         <br>
         <textarea name="content" rows="20" cols="100"></textarea>
         <br>
@@ -27,5 +33,9 @@ function check(form) {
         return false;
     }
     return true;
+}
+function hide() {
+    var popup = document.getElementById("popup");
+    popup.style.display = "none";
 }
 </script>
