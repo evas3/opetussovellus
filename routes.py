@@ -160,17 +160,19 @@ def add_multiple_choice(id):
 def submit_question(id, exercise_id):
     answer = sql_queries.question_answer(exercise_id)
     input = request.form["answer"]
-    if answer == input:
+    if answer[0] == input:
+        sql_modify_tables.correct_question(id, exercise_id, session["usersname"])
         flash("Vastasit oikein tehtävään "+str(exercise_id))
         return redirect("/courses/"+str(id)+"/exercises")
     flash("Vastasit väärin tehtävään "+str(exercise_id))
     return redirect("/courses/"+str(id)+"/exercises")
 
-@app.route("/submit/multiplechoice/<int:id>/<int:exercise_id>", methods=["POST"])
+@app.route("/submit/multiple_choice/<int:id>/<int:exercise_id>", methods=["POST"])
 def submit_multiple_choice(id, exercise_id):
     answer = sql_queries.multiplechoice_answer(exercise_id)
-    input = request.form["answer"]
-    if answer == input:
+    input = request.form["m_answer"]
+    if str(answer[0]) == str(input):
+        sql_modify_tables.correct_multiple_choice(id, exercise_id, session["usersname"])
         flash("Vastasit oikein monivalintatehtävään "+str(exercise_id))
         return redirect("/courses/"+str(id)+"/exercises")
     flash("Vastasit väärin monivalintatehtävään "+str(exercise_id))

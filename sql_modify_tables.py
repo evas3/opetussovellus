@@ -41,7 +41,7 @@ def new_choice(id, question, choice1, choice2, choice3, answer):
     db.session.execute(text(sql), {"course_id":id, "question":question, "choice1":choice1, "choice2":choice2, "choice3":choice3, "answer":answer})
     db.session.commit()
 
-def correct(course_id, question_id, student):
+def correct_question(course_id, question_id, student):
     sql = "INSERT INTO AnsweredQuestions (course_id, question_id, student) VALUES (:course_id, :question_id, :student)"
     db.session.execute(text(sql), {"course_id":course_id, "question_id":question_id, "student":student})
     db.session.commit()

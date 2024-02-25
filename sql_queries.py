@@ -54,13 +54,13 @@ def check_teacher(id):
 def question_answer(id):
     sql = "SELECT answer, course_id FROM Questions WHERE id=:id"
     execute = db.session.execute(text(sql), {"id":id})
-    answers = execute.fetchall()
+    answers = execute.fetchone()
     return answers
 
 def multiplechoice_answer(id):
     sql = "SELECT answer, course_id FROM Multiple_choice WHERE id=:id"
     execute = db.session.execute(text(sql), {"id":id})
-    answers = execute.fetchall()
+    answers = execute.fetchone()
     return answers
 
 def course_id(course_name, teacher):

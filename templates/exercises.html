@@ -8,7 +8,7 @@
     <h1>Kurssin {{course[0]}} tehtävät</h1>
     {% for test in tests %}
         <form action="/submit/question/{{ course[1] }}/{{ test[0] }}" method="POST">
-            Tehtävä{{ test[0] }}: {{ test[1] }}
+            Tehtävä {{ test[0] }}: {{ test[1] }}
             <br>
             <input type="text" name="answer">
             <br>
@@ -23,7 +23,7 @@
     {% for m_test in multiplechoice %}
         <form action="/submit/multiple_choice/{{ course[1] }}/{{ m_test[0] }}" method="POST">
             <br>
-            Monivalintatehtävä{{ m_test[0] }}: {{ m_test[1] }}
+            Monivalintatehtävä {{ m_test[0] }}: {{ m_test[1] }}
             <p>
                 <input type="radio" name="m_answer" value="1"> {{ m_test[2] }}
                 <input type="radio" name="m_answer" value="2"> {{ m_test[3] }}
