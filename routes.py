@@ -111,10 +111,23 @@ def edit(id):
     if session["teacher"]:
         teacher = sql_queries.check_teacher(id)
         if teacher == session["usersname"]:
+            content = sql_queries.course_content(id)
+            return render_template("edit_content.html", content=content)
+    flash("Sinun täytyy olla tämän kurssin opettaja muokataksesi kurssia")
+    return redirect("/courses/"+str(id))
+
+@app.route("/course_edited/<int:id>", methods=["POST"])
+def edited(id):
+    if session["teacher"]:
+        teacher = sql_queries.check_teacher(id)
+        if teacher == session["usersname"]:
+            new_content = request.form["content"]
+            sql_modify_tables.edit_content(id, new_content)
             flash("Kurssia muokattu")
             return redirect("/courses/"+str(id))
     flash("Sinun täytyy olla tämän kurssin opettaja muokataksesi kurssia")
     return redirect("/courses/"+str(id))
+
 
 @app.route("/courses/<int:course_id>/exercises")
 def exercises(course_id):
@@ -203,3 +216,10 @@ def delete_multiple_choice(id, exercise_id):
             return redirect("/courses/"+str(id)+"/exercises")
     flash("Sinun täytyy olla tämän kurssin opettaja poistaaksesi kurssin tehtäviä")
     return redirect("/courses/"+str(id)+"/exercises")
+
+@app.route("/user_data")
+def user_data():
+    if len(session["usersname"]) > 0:
+        return redirect("/")
+    flash("Sinun täytyy kirjautua sisään nähdäksesi käyttäjätiedot")
+    return redirect("/")

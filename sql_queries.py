@@ -80,3 +80,9 @@ def check_coursename(coursename):
     execute = db.session.execute(text(sql), {"coursename":coursename})
     ids = execute.fetchone()
     return ids
+
+def course_content(course_id):
+    sql = "SELECT Courses.id, Courses.coursename, Content.text_content FROM Courses INNER JOIN Content ON Courses.id=Content.course_id WHERE Courses.id=:id"
+    execute = db.session.execute(text(sql), {"id":course_id})
+    content = execute.fetchone()
+    return content

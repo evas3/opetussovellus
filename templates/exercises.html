@@ -11,6 +11,8 @@
 {% block page_content %}
 {% if session.usersname %}
     <h1>Kurssin {{course[0]}} tehtävät</h1>
+    <a href="/courses/{{ course[1] }}">Palaa kurssimateriaaliin</a>
+    <br>
     {% for test in tests %}
         <form action="/submit/question/{{ course[1] }}/{{ test[0] }}" method="POST">
             Tehtävä {{ test[0] }}: {{ test[1] }}

@@ -71,3 +71,8 @@ def add_content(course_id, content):
     sql = "INSERT INTO Content (course_id, text_content) VALUES (:course_id, :text_content)"
     db.session.execute(text(sql), {"course_id":course_id, "text_content":content})
     db.session.commit()
+
+def edit_content(course_id, new_content):
+    sql = "UPDATE Content SET text_content=:new_content WHERE course_id=:course_id"
+    db.session.execute(text(sql), {"course_id":course_id, "new_content":new_content})
+    db.session.commit()

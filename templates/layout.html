@@ -2,8 +2,11 @@
 {% block popup %}{% endblock %}
 <title>Opetussovellus - {% block title %}{% endblock %}</title>
 <h1>Opetussovellus</h1>
-<text>Etusivu</text>
-<text>Käyttäjätiedot</text>
-<text>Kirjaudu ulos</text>
+<a href="/courses">Kurssit</a>
+{% if session.usersname %}
+<a href="/user_data">Käyttäjätiedot</a>
+<a href="/logout">Kirjaudu ulos</a>
+{% endif %}
+
 <hr>
 {% block page_content %}{% endblock %}
