@@ -1,11 +1,15 @@
+{% extends "layout.html" %}
+{% block popup %}
 {% for message in get_flashed_messages() %}
     <div id="popup">
         {{ message }}
         <button onclick="hide()">X</button>
     </div>
 {% endfor %}
+{% endblock %}
+{% block titile %}Luo monivalintatehtävä{% endblock %}
+{% block page_content %}
 {% if session.teacher %}
-    <title>Luo monivalintatehtävä</title>
     <h1>Luo monivalintatehtävä</h1>
     <form action="/add/multiple_choice/{{ id }}" method="POST" onsubmit="return check(this)">
         Kysymys:
@@ -28,6 +32,7 @@
         <input type="submit" value="Lisää tehtävä">
     </form>
 {% else %}
+    <titile>Opetussovellus</titile>
     <text>Sinun tulee ensin kirjautua sisään opettajana muokataksesi kursseja</text>
     <a href="/">Kirjaudu sisään</a>
 {% endif %}
@@ -77,3 +82,4 @@
         popup.style.display = "none";
     }
 </script>
+{% endblock %}

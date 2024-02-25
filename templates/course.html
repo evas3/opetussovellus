@@ -1,12 +1,16 @@
+{% extends "layout.html" %}
+{% block popup %}
 {% for message in get_flashed_messages() %}
     <div id="popup">
         {{ message }}
         <button onclick="hide()">X</button>
     </div>
 {% endfor %}
+{% endblock %}
+{% block titile %}{{course[0]}}{% endblock %}
+{% block page_content %}
 {% if session.usersname %}
-    <title> {{course[0]}} </title>
-    <h1> {{course[0]}} </h1>
+    <h1>{{course[0]}}</h1>
     {% if amount[1] %}
         {% for text in content %}
             <text> {{text[0]}} </text>
@@ -39,19 +43,20 @@
 {% endif %}
 
 <script>
-    function check(form) {
-        if (form.answer.value.length > 500) {
-            alert("Vastaus on liian pitkä");
-            return false;
-        }
-        if (form.answer.value == null) {
-            alert("Kysymys on alle viisi merkkiä pitkä");
-            return false;
-        }
-        return true;
+function hide() {
+    var popup = document.getElementById("popup");
+    popup.style.display = "none";
+}
+function check(form) {
+    if (form.answer.value.length > 500) {
+        alert("Vastaus on liian pitkä");
+        return false;
     }
-    function hide() {
-        var popup = document.getElementById("popup");
-        popup.style.display = "none";
+    if (form.answer.value == null) {
+        alert("Kysymys on alle viisi merkkiä pitkä");
+        return false;
     }
+    return true;
+}
 </script>
+{% endblock %}

@@ -1,11 +1,15 @@
+{% extends "layout.html" %}
+{% block popup %}
 {% for message in get_flashed_messages() %}
     <div id="popup">
         {{ message }}
         <button onclick="hide()">X</button>
     </div>
 {% endfor %}
+{% endblock %}
+{% block titile %}Uusi kurssi{% endblock %}
+{% block page_content %}
 {% if session.teacher%}
-    <title>Uusi kurssi</title>
     <h1>Uusi kurssi</h1>
     <form action="/course_added" method="POST" onsubmit="return check(this)">
         Kurssin nimi:
@@ -18,6 +22,7 @@
         <input type="submit" value="Luo kurssi">
     </form>
 {% else %}
+    <titile>Opetussovellus</titile>
     <text>Sinun tulee ensin kirjautua sisään opettajana lisätäksesi kurssin</text>
     <a href="/">Kirjaudu sisään</a>
 {% endif %}
@@ -39,3 +44,4 @@ function hide() {
     popup.style.display = "none";
 }
 </script>
+{% endblock %}
