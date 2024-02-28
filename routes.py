@@ -220,6 +220,6 @@ def delete_multiple_choice(id, exercise_id):
 @app.route("/user_data")
 def user_data():
     if len(session["usersname"]) > 0:
-        return redirect("/")
+        return render_template("user_data.html")
     flash("Sinun täytyy kirjautua sisään nähdäksesi käyttäjätiedot")
     return redirect("/")

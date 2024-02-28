@@ -1,13 +1,5 @@
 {% extends "layout.html" %}
-{% block popup %}
-{% for message in get_flashed_messages() %}
-    <div id="popup">
-        {{ message }}
-        <button onclick="hide()">X</button>
-    </div>
-{% endfor %}
-{% endblock %}
-{% block titile %}Luo tehtävä{% endblock %}
+{% block title %}Luo tehtävä{% endblock %}
 {% block page_content %}
 {% if session.teacher %}
     <h1>Luo tehtävä</h1>
@@ -21,9 +13,7 @@
         <input type="submit" value="Lisää tehtävä">
     </form>
 {% else %}
-    <titile>Opetussovellus</titile>
-    <text>Sinun tulee ensin kirjautua sisään opettajana muokataksesi kursseja</text>
-    <a href="/">Kirjaudu sisään</a>
+    <text>Vain kurssin opettaja voi luoda kurssitehtäviä</text>
 {% endif %}
 
 <script>
@@ -45,10 +35,6 @@
             return false;
         }
         return true;
-    }
-    function hide() {
-        var popup = document.getElementById("popup");
-        popup.style.display = "none";
     }
 </script>
 {% endblock %}

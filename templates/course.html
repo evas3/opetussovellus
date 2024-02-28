@@ -1,15 +1,6 @@
 {% extends "layout.html" %}
-{% block popup %}
-{% for message in get_flashed_messages() %}
-    <div id="popup">
-        {{ message }}
-        <button onclick="hide()">X</button>
-    </div>
-{% endfor %}
-{% endblock %}
-{% block titile %}{{course[0]}}{% endblock %}
+{% block title %}{{course[0]}}{% endblock %}
 {% block page_content %}
-{% if session.usersname %}
     <h1>{{course[0]}}</h1>
     {% if amount[1] %}
         {% for text in content %}
@@ -18,12 +9,13 @@
         {% endfor %}
     {% endif %}
     {% if amount[0] %}
-    <br>
-    Kun olet sisäistänyt kurssimateriaalin voit jatkaa kurssitehtäviin: 
-    <a href="/courses/{{course[1]}}/exercises">Kurssitehtävät</a>
-    <br>
+        <br>
+        Kun olet sisäistänyt kurssimateriaalin voit jatkaa kurssitehtäviin. Täältä löydät myös kurssitehtävien ratkomiseen liittyvän datan:  
+        <a href="/courses/{{course[1]}}/exercises">Kurssitehtävät</a>
+        <br>
     {% endif %}
     {% if session.teacher %}
+        <br>
         <text>Muokkaa kurssia:</text>
         <a href="/edit/{{course[1]}}">Muokkaa</a>
         <br>
@@ -37,26 +29,17 @@
         <a href="/create/multiple_choice/{{course[1]}}">Lisää</a>
         <br>
     {% endif %}
-{% else %}
-    <text>Sinun tulee ensin kirjautua sisään nähdäksesi kurssit</text>
-    <a href="/">Kirjaudu sisään</a>
-{% endif %}
-
-<script>
-function hide() {
-    var popup = document.getElementById("popup");
-    popup.style.display = "none";
-}
-function check(form) {
-    if (form.answer.value.length > 500) {
-        alert("Vastaus on liian pitkä");
-        return false;
-    }
-    if (form.answer.value == null) {
-        alert("Kysymys on alle viisi merkkiä pitkä");
-        return false;
-    }
-    return true;
-}
-</script>
+    <script>
+        function check(form) {
+            if (form.answer.value.length > 500) {
+                alert("Vastaus on liian pitkä");
+                return false;
+            }
+            if (form.answer.value == null) {
+                alert("Kysymys on alle viisi merkkiä pitkä");
+                return false;
+            }
+            return true;
+        }
+        </script>
 {% endblock %}

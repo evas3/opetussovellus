@@ -1,12 +1,32 @@
 <!doctype html>
-{% block popup %}{% endblock %}
-<title>Opetussovellus - {% block title %}{% endblock %}</title>
-<h1>Opetussovellus</h1>
-<a href="/courses">Kurssit</a>
-{% if session.usersname %}
-<a href="/user_data">Käyttäjätiedot</a>
-<a href="/logout">Kirjaudu ulos</a>
-{% endif %}
-
-<hr>
-{% block page_content %}{% endblock %}
+<head>
+    <link rel="stylesheet" href="/style/styles.css"></link>
+    <title>Opetussovellus - {% block title %}{% endblock %}</title>
+</head>
+<body>
+    {% for message in get_flashed_messages() %}
+        <div id="popup">
+            {{ message }}
+            <button onclick="hide()">X</button>
+        </div>
+    {% endfor %}
+    <h1>Opetussovellus</h1>
+    {% if session.usersname %}
+        <div class="navigation">
+            <a href="/courses">Kurssit</a>
+            <a href="/user_data">Käyttäjätiedot</a>
+            <a href="/logout">Kirjaudu ulos</a>
+        </div>
+        <hr>
+        {% block page_content %}{% endblock %}
+    {% else %}
+        <text>Sinun tulee ensin kirjautua sisään nähdäksesi kurssit</text>
+        <a href="/">Kirjaudu sisään</a>
+    {% endif %}
+    <script>
+        function hide() {
+            var popup = document.getElementById("popup");
+            popup.style.display = "none";
+        }
+    </script>
+</body>

@@ -1,25 +1,16 @@
 {% extends "layout.html" %}
-{% block popup %}
-{% for message in get_flashed_messages() %}
-    <div id="popup">
-        {{ message }}
-        <button onclick="hide()">X</button>
-    </div>
-{% endfor %}
-{% endblock %}
-{% block titile %}Muokkaa kurssia{% endblock %}
+{% block title %}Muokkaa kurssia{% endblock %}
 {% block page_content %}
 {% if session.teacher %}
-<h1>{{content[1]}}</h1>
-<form action="/course_edited/{{content[0]}}" method="POST">
-    Kurrssin sisältö:
-    <br>
-    <textarea name="content" rows="20" cols="100">{{content[2]}}</textarea>
-    <br>
-    <input type="submit" value="Muokkaa">
-</form>
+    <h1>{{content[1]}}</h1>
+    <form action="/course_edited/{{content[0]}}" method="POST">
+        Kurrssin sisältö:
+        <br>
+        <textarea name="content" rows="20" cols="100">{{content[2]}}</textarea>
+        <br>
+        <input type="submit" value="Muokkaa">
+    </form>
 {% else %}
-<text>Sinun tulee ensin kirjautua sisään opettajana lisätäksesi kurssin</text>
-<a href="/">Kirjaudu sisään</a>
+    <text>Vain kurssin opettaja voi muokata kurssia</text>
 {% endif %}
 {% endblock %}

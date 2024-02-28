@@ -1,18 +1,20 @@
 {% extends "layout.html" %}
-{% block popup %}
-{% for message in get_flashed_messages() %}
-    <div id="popup">
-        {{ message }}
-        <button onclick="hide()">X</button>
-    </div>
-{% endfor %}
-{% endblock %}
-{% block titile %}Luo tehtävä{% endblock %}
+{% block title %}Luo tehtävä{% endblock %}
 {% block page_content %}
-{% if session.usersname %}
     <h1>Kurssin {{course[0]}} tehtävät</h1>
     <a href="/courses/{{ course[1] }}">Palaa kurssimateriaaliin</a>
     <br>
+    <h2>Kurssikohtaiset tilastot</h2>
+    {% if session.teacher %}
+    <table>
+        <tr>
+            <th>Oppilas</th>
+            <th>Ratkaistujen kurssitehtävien määrä</th>
+            <th>Ratkaistut kurssitehtävät</th>
+        </tr>
+    </table>
+    {% else %}
+    {% endif %}
     {% for test in tests %}
         <form action="/submit/question/{{ course[1] }}/{{ test[0] }}" method="POST">
             Tehtävä {{ test[0] }}: {{ test[1] }}
@@ -45,16 +47,4 @@
             <br>
         {% endif %}
     {% endfor %}
-{% else %}
-    <titile>Opetussovellus</titile>
-    <text>Sinun tulee ensin kirjautua sisään nähdäksesi kurssit</text>
-    <a href="/">Kirjaudu sisään</a>
-{% endif %}
-
-<script>
-function hide() {
-    var popup = document.getElementById("popup");
-    popup.style.display = "none";
-}
-</script>
 {% endblock %}

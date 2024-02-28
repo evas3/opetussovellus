@@ -1,15 +1,6 @@
 {% extends "layout.html" %}
-{% block popup %}
-{% for message in get_flashed_messages() %}
-    <div id="popup">
-        {{ message }}
-        <button onclick="hide()">X</button>
-    </div>
-{% endfor %}
-{% endblock %}
-{% block titile %}Kurssit{% endblock %}
+{% block title %}Kurssit{% endblock %}
 {% block page_content %}
-{% if session.usersname %}
     <h1>Tervetuloa {{ session.usersname }}!</h1>
     {% if session.teacher %}
         <text>Tässä näet opettamasi kurssit:</text>
@@ -27,14 +18,4 @@
         <a href="/create_course">Luo uusi kurssi</a>
     {% endif %}
     <br>
-{% else %}
-    <text>Sinun tulee ensin kirjautua sisään nähdäksesi kurssit</text>
-    <a href="/">Kirjaudu sisään</a>
-{% endif %}
-<script>
-function hide() {
-    var popup = document.getElementById("popup");
-    popup.style.display = "none";
-}
-</script>
 {% endblock %}
