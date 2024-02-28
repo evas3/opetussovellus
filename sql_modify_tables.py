@@ -7,7 +7,7 @@ def new_user(username, password, role):
     db.session.commit()
 
 def new_course(course_name, teacher):
-    sql = "INSERT INTO Courses (coursename, teacher, students) VALUES (:course_name, :teacher, NULL)"
+    sql = "INSERT INTO Courses (coursename, teacher) VALUES (:course_name, :teacher)"
     db.session.execute(text(sql), {"course_name":course_name, "teacher":teacher})
     db.session.commit()
 
@@ -75,4 +75,13 @@ def add_content(course_id, content):
 def edit_content(course_id, new_content):
     sql = "UPDATE Content SET text_content=:new_content WHERE course_id=:course_id"
     db.session.execute(text(sql), {"course_id":course_id, "new_content":new_content})
+    db.session.commit()
+
+def delete_user(username):
+    sql = "DELETE FROM AnsweredQuestions WHERE student=:username"
+    db.session.execute(text(sql), {"username":username})
+    sql = "DELETE FROM AnsweredMultiple_choice WHERE student=:username"
+    db.session.execute(text(sql), {"username":username})
+    sql = "DELETE FROM Users WHERE username=:username"
+    db.session.execute(text(sql), {"username":username})
     db.session.commit()

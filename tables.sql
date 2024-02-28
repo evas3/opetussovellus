@@ -7,8 +7,7 @@ CREATE TABLE Users (
 CREATE TABLE Courses (
     id SERIAL PRIMARY KEY,
     coursename TEXT UNIQUE,
-    teacher TEXT,
-    students TEXT);
+    teacher TEXT);
 
 CREATE TABLE Content (
     id SERIAL PRIMARY KEY,

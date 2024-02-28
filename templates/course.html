@@ -11,7 +11,7 @@
     {% if amount[0] %}
         <br>
         Kun olet sisäistänyt kurssimateriaalin voit jatkaa kurssitehtäviin. Täältä löydät myös kurssitehtävien ratkomiseen liittyvän datan:  
-        <a href="/courses/{{course[1]}}/exercises">Kurssitehtävät</a>
+        <button onclick="location.href='/courses/{{course[1]}}/exercises'">Kurssitehtävät</button>
         <br>
     {% endif %}
     {% if session.teacher %}

@@ -2,5 +2,16 @@
 {% block title %}Uusi kurssi{% endblock %}
 {% block page_content %}
 <h1>Ratkaissut tehtävät</h1>
-<text>Poista käyttäjätili</text>
+<h1>Poista tili</h1>
+<text>Poista käyttäjätili. Tilin poistamista ei voi peruuttaa</text>
+<br>
+<button onclick="confirmation()">Poista tili</button>
+<script>
+    function confirmation() {
+        let text = "Oletko varma että haluat poistaa käyttäjätilisi?";
+        if (confirm(text) == true) {
+            location.replace("/delete_account")
+        }
+    }
+</script>
 {% endblock %}

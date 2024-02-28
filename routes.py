@@ -223,3 +223,14 @@ def user_data():
         return render_template("user_data.html")
     flash("Sinun täytyy kirjautua sisään nähdäksesi käyttäjätiedot")
     return redirect("/")
+
+@app.route("/delete_account")
+def delete_account():
+    if len(session["usersname"]) > 0:
+        sql_modify_tables.delete_user(session["usersname"])
+        del session["usersname"]
+        session["teacher"] = False
+        flash("Käyttäjätilisi on poistettu ja sinut on kirjattu ulos")
+        return redirect("/")
+    flash("Et ole kirjautunut sisään")
+    return redirect("/")
