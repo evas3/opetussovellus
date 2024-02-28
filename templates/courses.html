@@ -15,7 +15,7 @@
     </ul>
     {% if session.teacher %}
         <text>Lisää kurssi tästä:</text>
-        <a href="/create_course">Luo uusi kurssi</a>
+        <button onclick="location.href='/create_course'">Luo uusi kurssi</button>
     {% endif %}
     <br>
 {% endblock %}

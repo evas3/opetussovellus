@@ -11,22 +11,22 @@
     {% if amount[0] %}
         <br>
         Kun olet sisäistänyt kurssimateriaalin voit jatkaa kurssitehtäviin. Täältä löydät myös kurssitehtävien ratkomiseen liittyvän datan:  
-        <button onclick="location.href='/courses/{{course[1]}}/exercises'">Kurssitehtävät</button>
+        <a href="/courses/{{course[1]}}/exercises">Kurssitehtävät</a>
         <br>
     {% endif %}
     {% if session.teacher %}
         <br>
         <text>Muokkaa kurssia:</text>
-        <a href="/edit/{{course[1]}}">Muokkaa</a>
+        <button onclick="location.href='/edit/{{course[1]}}'">Muokkaa</button>
         <br>
         <text>Poista kurssi:</text>
-        <a href="/delete/{{course[1]}}">Poista</a>
+        <button onclick="location.href='/delete/{{course[1]}}'">Poista</button>
         <br>
         <text>Lisää kirjallinen tehtävä:</text>
-        <a href="/create/question/{{course[1]}}">Lisää</a>
+        <button onclick="location.href='/create/question/{{course[1]}}'">Lisää</button>
         <br>
         <text>Lisää monivalinta tehtävä:</text>
-        <a href="/create/multiple_choice/{{course[1]}}">Lisää</a>
+        <button onclick="location.href='/create/multiple_choice/{{course[1]}}'">Lisää</button>
         <br>
     {% endif %}
     <script>

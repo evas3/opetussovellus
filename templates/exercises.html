@@ -25,7 +25,7 @@
         </form>
         {% if session.teacher %}
             <text>Poista tehtävä:</text>
-            <a href="/delete/question/{{ course[1] }}/{{ test[0] }}">Poista</a>
+            <button onclick="location.href='/delete/question/{{ course[1] }}/{{ test[0] }}'">Poista</button>
             <br>
         {% endif %}
     {% endfor %}
@@ -43,7 +43,7 @@
         </form>
         {% if session.teacher %}
             <text>Poista tehtävä:</text>
-            <a href="/delete/multiple_choice/{{ course[1] }}/{{ m_test[0] }}">Poista</a>
+            <button onclick="location.href='/delete/multiple_choice/{{ course[1] }}/{{ m_test[0] }}'">Poista</button>
             <br>
         {% endif %}
     {% endfor %}
