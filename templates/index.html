@@ -11,18 +11,20 @@
 </head>
 <h1>Etusivu</h1>
 <text>Tervetuloa opetussovellukseen. Kirjaudu sisään jatkaaksesi</text>
-<div class="login">
-    <form action="/user" method="POST" onsubmit="return check(this)">
-        <div class="containrt">
-        Käyttäjänimi:
-        <input type="text" name="name">
-        </div>
-        <div class="containrt">
-        Salasana:
-        <input type="text" name="keyw">
-        </div>
-        <input type="submit" value="Kirjaudu">
-    </form>
+<div class="content">
+    <div class="login">
+        <form action="/user" method="POST" onsubmit="return check(this)">
+            <div class="containrt">
+            Käyttäjänimi:
+            <input type="text" name="name">
+            </div>
+            <div class="containrt">
+            Salasana:
+            <input type="text" name="keyw">
+            </div>
+            <input type="submit" value="Kirjaudu">
+        </form>
+    </div>
 </div>
 <i> Jos sinulla ei ole käyttäjätiliä, voit luoda sellaisen täältä:</i>
 <a href="/create_user">Luo uusi käyttäjätunus</a>

@@ -18,13 +18,12 @@
     {% endif %}
     {% if session.teacher %}
         <div class="add">
-            <br>
             <text>Muokkaa kurssia:</text>
             <button onclick="location.href='/edit/{{course[1]}}'">Muokkaa</button>
             <br>
             <br>
             <text>Poista kurssi:</text>
-            <button onclick="location.href='/delete/{{course[1]}}'">Poista</button>
+            <button class="del" onclick="location.href='/delete/{{course[1]}}'">Poista</button>
         </div>
     {% endif %}
     <script>

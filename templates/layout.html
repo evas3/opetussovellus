@@ -12,12 +12,14 @@
                 <button class="dismiss" onclick="hide()">X</button>
             </div>
         {% endfor %}
-        <h1>Opetussovellus</h1>
+        <div class="title">
+            <h1>Opetussovellus</h1>
+        </div>
         {% if session.usersname %}
             <div class="navigation" id="topnav">
                 <a href="/courses">Kurssit</a>
                 <a href="/user_data">Käyttäjätiedot</a>
-                <a href="/logout" style="float: right;">Kirjaudu ulos</a>
+                <a href="/logout" style="float: right;"><i>Kirjaudu ulos</i></a>
             </div>
             <hr>
             <hr>
