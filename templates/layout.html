@@ -1,32 +1,36 @@
 <!doctype html>
-<head>
-    <link rel="stylesheet" href="/style/styles.css"></link>
-    <title>Opetussovellus - {% block title %}{% endblock %}</title>
-</head>
-<body>
-    {% for message in get_flashed_messages() %}
-        <div id="popup">
-            {{ message }}
-            <button onclick="hide()">X</button>
-        </div>
-    {% endfor %}
-    <h1>Opetussovellus</h1>
-    {% if session.usersname %}
-        <div class="navigation">
-            <a href="/courses">Kurssit</a>
-            <a href="/user_data">Käyttäjätiedot</a>
-            <a href="/logout">Kirjaudu ulos</a>
-        </div>
-        <hr>
-        {% block page_content %}{% endblock %}
-    {% else %}
-        <text>Sinun tulee ensin kirjautua sisään nähdäksesi kurssit</text>
-        <a href="/">Kirjaudu sisään</a>
-    {% endif %}
-    <script>
-        function hide() {
-            var popup = document.getElementById("popup");
-            popup.style.display = "none";
-        }
-    </script>
-</body>
+<html>
+    <head>
+        <link href="/static/styles.css" rel="stylesheet">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Opetussovellus - {% block title %}{% endblock %}</title>
+    </head>
+    <body>
+        {% for message in get_flashed_messages() %}
+            <div class="popup" id="info">
+                {{ message }}
+                <button class="dismiss" onclick="hide()">X</button>
+            </div>
+        {% endfor %}
+        <h1>Opetussovellus</h1>
+        {% if session.usersname %}
+            <div class="navigation" id="topnav">
+                <a href="/courses">Kurssit</a>
+                <a href="/user_data">Käyttäjätiedot</a>
+                <a href="/logout" style="float: right;">Kirjaudu ulos</a>
+            </div>
+            <hr>
+            <hr>
+            {% block page_content %}{% endblock %}
+        {% else %}
+            <text>Sinun tulee ensin kirjautua sisään nähdäksesi kurssit</text>
+            <a href="/">Kirjaudu sisään</a>
+        {% endif %}
+        <script>
+            function hide() {
+                var popup = document.getElementById("popup");
+                info.style.display = "none";
+            }
+        </script>
+    </body>
+</html>

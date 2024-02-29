@@ -1,9 +1,13 @@
 {% extends "layout.html" %}
 {% block title %}Luo tehtävä{% endblock %}
 {% block page_content %}
-    <h1>Kurssin {{course[0]}} tehtävät</h1>
-    <a href="/courses/{{ course[1] }}">Palaa kurssimateriaaliin</a>
+    <h1>{{course[0]}}</h1>
+    <div class="navigation2">
+        <a href="/courses/{{ course[1] }}">Kurssimateriaali</a>
+        <a href="/courses/{{course[1]}}/exercises">Tehtävät</a>
+    </div>
     <br>
+    <h2>Tehtävät</h2>
     <h2>Kurssikohtaiset tilastot</h2>
     {% if session.teacher %}
     <table>
@@ -15,6 +19,7 @@
     </table>
     {% else %}
     {% endif %}
+    <h2>Kurssitehtävät</h2>
     {% for test in tests %}
         <form action="/submit/question/{{ course[1] }}/{{ test[0] }}" method="POST">
             Tehtävä {{ test[0] }}: {{ test[1] }}
@@ -29,6 +34,12 @@
             <br>
         {% endif %}
     {% endfor %}
+    {% if session.teacher %}
+        <text>Lisää kirjallinen tehtävä:</text>
+        <button onclick="location.href='/create/question/{{course[1]}}'">Lisää</button>
+        <br>
+    {% endif %}
+    <h2>Monivalintatehtävä</h2>
     {% for m_test in multiplechoice %}
         <form action="/submit/multiple_choice/{{ course[1] }}/{{ m_test[0] }}" method="POST">
             <br>
@@ -47,4 +58,9 @@
             <br>
         {% endif %}
     {% endfor %}
+    {% if session.teacher %}
+        <text>Lisää monivalinta tehtävä:</text>
+        <button onclick="location.href='/create/multiple_choice/{{course[1]}}'">Lisää</button>
+        <br>
+    {% endif %}
 {% endblock %}

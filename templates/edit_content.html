@@ -2,7 +2,7 @@
 {% block title %}Muokkaa kurssia{% endblock %}
 {% block page_content %}
 {% if session.teacher %}
-    <h1>{{content[1]}}</h1>
+    <h2>{{content[1]}}</h2>
     <form action="/course_edited/{{content[0]}}" method="POST">
         Kurrssin sisältö:
         <br>

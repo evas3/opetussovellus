@@ -2,7 +2,7 @@
 {% block title %}Luo tehtävä{% endblock %}
 {% block page_content %}
 {% if session.teacher %}
-    <h1>Luo tehtävä</h1>
+    <h2>Luo tehtävä</h2>
     <form action="/add/question/{{ id }}" method="POST" onsubmit="return check(this)">
         Kysymys:
         <input type="text" name="question">

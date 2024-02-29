@@ -2,7 +2,7 @@
 {% block title %}Luo monivalintatehtävä{% endblock %}
 {% block page_content %}
 {% if session.teacher %}
-    <h1>Luo monivalintatehtävä</h1>
+    <h2>Luo monivalintatehtävä</h2>
     <form action="/add/multiple_choice/{{ id }}" method="POST" onsubmit="return check(this)">
         Kysymys:
         <input type="text" name="question">

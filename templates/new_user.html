@@ -1,10 +1,13 @@
 {% for message in get_flashed_messages() %}
-    <div id="popup">
+    <div class="popup" id="info">
         {{ message }}
-        <button onclick="hide()">X</button>
+        <button class="dismiss" onclick="hide()">X</button>
     </div>
 {% endfor %}
-<title>Uusi käyttäjä</title>
+<head>
+    <link href="/static/styles.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Uusi käyttäjä</title>
 <h1>Luo uusi käyttäjä</h1>
 <p>Tunnuksen tulee olla ainakin kolmen merkin pituinen eikä salasanassa saa olla alle viittä merkkiä.</p>
 <form action="/user_created" method="POST" onsubmit="return check(this)">
@@ -57,6 +60,6 @@ function check(form) {
 }
 function hide() {
     var popup = document.getElementById("popup");
-    popup.style.display = "none";
+    info.style.display = "none";
 }
 </script>

@@ -1,10 +1,14 @@
 {% for message in get_flashed_messages() %}
-    <div id="popup">
+    <div class="popup" id="info">
         {{ message }}
-        <button onclick="hide()">X</button>
+        <button class="dismiss" onclick="hide()">X</button>
     </div>
 {% endfor %}
-<title>Opetussovellus - Etusivu</title>
+<head>
+    <link href="/static/styles.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Opetussovellus - Etusivu</title>
+</head>
 <h1>Etusivu</h1>
 <text>Tervetuloa opetussovellukseen. Kirjaudu sisään jatkaaksesi</text>
 <br>
@@ -37,6 +41,6 @@ function check(form) {
 }
 function hide() {
     var popup = document.getElementById("popup");
-    popup.style.display = "none";
+    info.style.display = "none";
 }
 </script>
