@@ -8,7 +8,7 @@
     <body>
         {% for message in get_flashed_messages() %}
             <div class="popup" id="info">
-                {{ message }}
+                <i>{{ message }}</i>
                 <button class="dismiss" onclick="hide()">X</button>
             </div>
         {% endfor %}

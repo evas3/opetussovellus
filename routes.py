@@ -153,7 +153,7 @@ def add_question(id):
             answer = request.form["answer"]
             sql_modify_tables.new_question(id, question, answer)
             flash("Tehtävä lisätty")
-            return redirect("/courses/"+str(id))
+            return redirect("/courses/"+str(id)+"/exercises")
     flash("Sinun täytyy olla tämän kurssin opettaja lisätäksesi kurssille tehtäviä")
     return redirect("/courses/"+str(id))
 
@@ -169,7 +169,7 @@ def add_multiple_choice(id):
             answer = request.form["choice"]
             sql_modify_tables.new_choice(id, question, choice1, choice2, choice3, answer)
             flash("Monivalintatehtävä lisätty")
-            return redirect("/courses/"+str(id))
+            return redirect("/courses/"+str(id)+"/exercises")
     flash("Sinun täytyy olla tämän kurssin opettaja lisätäksesi kurssille tehtäviä")
     return redirect("/courses/"+str(id))
 

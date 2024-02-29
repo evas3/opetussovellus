@@ -1,6 +1,6 @@
 {% for message in get_flashed_messages() %}
     <div class="popup" id="info">
-        {{ message }}
+        <i>{{ message }}</i>
         <button class="dismiss" onclick="hide()">X</button>
     </div>
 {% endfor %}
@@ -11,19 +11,19 @@
 </head>
 <h1>Etusivu</h1>
 <text>Tervetuloa opetussovellukseen. Kirjaudu sisään jatkaaksesi</text>
-<br>
-<form action="/user" method="POST" onsubmit="return check(this)">
-    <div class="containrt">
-    Käyttäjänimi:
-    <input type="text" name="name">
-    </div>
-    <div class="containrt">
-    Salasana:
-    <input type="text" name="keyw">
-    </div>
-    <input type="submit" value="Kirjaudu">
-</form>
-<br>
+<div class="login">
+    <form action="/user" method="POST" onsubmit="return check(this)">
+        <div class="containrt">
+        Käyttäjänimi:
+        <input type="text" name="name">
+        </div>
+        <div class="containrt">
+        Salasana:
+        <input type="text" name="keyw">
+        </div>
+        <input type="submit" value="Kirjaudu">
+    </form>
+</div>
 <i> Jos sinulla ei ole käyttäjätiliä, voit luoda sellaisen täältä:</i>
 <a href="/create_user">Luo uusi käyttäjätunus</a>
 

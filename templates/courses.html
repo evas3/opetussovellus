@@ -3,19 +3,26 @@
 {% block page_content %}
     <h1>Kurssit</h1>
     {% if session.teacher %}
-        <text>Tässä näet opettamasi kurssit:</text>
+        <div class="info">
+            <text>Tässä näet opettamasi kurssit:</text>
+        </div>
     {% else %}
-        <text>Tässä näet saatavilla olevat kurssit:</text>
+        <div class="info">
+            <text>Tässä näet saatavilla olevat kurssit:</text>
+        </div>
     {% endif %}
     <br>
-    <ul>
-        {% for course in courses %}
-            <li><a href="/courses/{{ course[1] }}">{{ course[0] }}</a></li>
-        {% endfor %}
-    </ul>
+    <div class="courses">
+        <ul>
+            {% for course in courses %}
+                <li><a href="/courses/{{ course[1] }}">{{ course[0] }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
     {% if session.teacher %}
-        <text>Lisää kurssi tästä:</text>
-        <button onclick="location.href='/create_course'">Luo uusi kurssi</button>
+        <div class="add">
+            <text>Lisää kurssi tästä:</text>
+            <button onclick="location.href='/create_course'">Luo uusi kurssi</button>
+        </div>
     {% endif %}
-    <br>
 {% endblock %}

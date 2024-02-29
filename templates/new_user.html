@@ -1,6 +1,6 @@
 {% for message in get_flashed_messages() %}
     <div class="popup" id="info">
-        {{ message }}
+        <i>{{ message }}</i>
         <button class="dismiss" onclick="hide()">X</button>
     </div>
 {% endfor %}
@@ -8,8 +8,10 @@
     <link href="/static/styles.css" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Uusi käyttäjä</title>
+</head>
 <h1>Luo uusi käyttäjä</h1>
 <p>Tunnuksen tulee olla ainakin kolmen merkin pituinen eikä salasanassa saa olla alle viittä merkkiä.</p>
+<div class="login">
 <form action="/user_created" method="POST" onsubmit="return check(this)">
     Anna käyttäjätunnus:
     <input type="text" name="name">
@@ -25,11 +27,9 @@
         <input type="radio" name="role" value="1"> Oppilas
         <input type="radio" name="role" value="2"> Opettaja
     </p>
-    <br>
     <input type="submit" value="Luo käyttäjätunnus">
-
 </form>
-
+</div>
 <script>
 function check(form) {
     if (form.name.value.length > 25) {

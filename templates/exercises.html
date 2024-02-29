@@ -21,46 +21,59 @@
     {% endif %}
     <h2>Kurssitehtävät</h2>
     {% for test in tests %}
-        <form action="/submit/question/{{ course[1] }}/{{ test[0] }}" method="POST">
-            Tehtävä {{ test[0] }}: {{ test[1] }}
-            <br>
-            <input type="text" name="answer">
-            <br>
-            <input type="submit" value="Vastaa">
+        <div class="exercise">
+            <form action="/submit/question/{{ course[1] }}/{{ test[0] }}" method="POST">
+                <b>Tehtävä {{ test[0] }}:</b>
+                <br>
+                {{ test[1] }}
+                <br>
+                <input type="text" name="answer">
+                <br>
+                <input type="submit" value="Vastaa">
         </form>
+        </div>
         {% if session.teacher %}
-            <text>Poista tehtävä:</text>
-            <button onclick="location.href='/delete/question/{{ course[1] }}/{{ test[0] }}'">Poista</button>
-            <br>
+            <div class="delete">
+                <text>Poista tehtävä:</text>
+                <button onclick="location.href='/delete/question/{{ course[1] }}/{{ test[0] }}'">Poista</button>
+                <br>
+            </div>
         {% endif %}
     {% endfor %}
     {% if session.teacher %}
-        <text>Lisää kirjallinen tehtävä:</text>
-        <button onclick="location.href='/create/question/{{course[1]}}'">Lisää</button>
-        <br>
+        <div class="add">
+            <text>Lisää kirjallinen tehtävä:</text>
+            <button onclick="location.href='/create/question/{{course[1]}}'">Lisää</button>
+            <br>
+        </div>
     {% endif %}
     <h2>Monivalintatehtävä</h2>
     {% for m_test in multiplechoice %}
-        <form action="/submit/multiple_choice/{{ course[1] }}/{{ m_test[0] }}" method="POST">
-            <br>
-            Monivalintatehtävä {{ m_test[0] }}: {{ m_test[1] }}
-            <p>
-                <input type="radio" name="m_answer" value="1"> {{ m_test[2] }}
-                <input type="radio" name="m_answer" value="2"> {{ m_test[3] }}
-                <input type="radio" name="m_answer" value="3"> {{ m_test[4] }}
-            </p>
-            <br>
-            <input type="submit" value="Vastaa">
-        </form>
+        <div class="exercise">
+            <form action="/submit/multiple_choice/{{ course[1] }}/{{ m_test[0] }}" method="POST">
+                <b>Monivalintatehtävä {{ m_test[0] }}:</b>
+                <br>
+                {{ m_test[1] }}
+                <p>
+                    <input type="radio" name="m_answer" value="1"> {{ m_test[2] }}
+                    <input type="radio" name="m_answer" value="2"> {{ m_test[3] }}
+                    <input type="radio" name="m_answer" value="3"> {{ m_test[4] }}
+                </p>
+                <input type="submit" value="Vastaa">
+            </form>
+        </div>
         {% if session.teacher %}
-            <text>Poista tehtävä:</text>
-            <button onclick="location.href='/delete/multiple_choice/{{ course[1] }}/{{ m_test[0] }}'">Poista</button>
-            <br>
+            <div class="delete">
+                <text>Poista tehtävä:</text>
+                <button onclick="location.href='/delete/multiple_choice/{{ course[1] }}/{{ m_test[0] }}'">Poista</button>
+            </div>
         {% endif %}
     {% endfor %}
     {% if session.teacher %}
-        <text>Lisää monivalinta tehtävä:</text>
-        <button onclick="location.href='/create/multiple_choice/{{course[1]}}'">Lisää</button>
-        <br>
+        <div class="add">
+            <text>Lisää monivalinta tehtävä:</text>
+            <button onclick="location.href='/create/multiple_choice/{{course[1]}}'">Lisää</button>
+            <br>
+        </div>
     {% endif %}
 {% endblock %}

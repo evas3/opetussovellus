@@ -3,9 +3,11 @@
 {% block page_content %}
 {% if session.teacher %}
     <h2>Uusi kurssi</h2>
+    <div class="info">
     <form action="/course_added" method="POST" onsubmit="return check(this)">
         Kurssin nimi:
         <input type="text" name="course_name">
+        <br>
         <br>
         Kurrssin sisältö:
         <br>
@@ -13,6 +15,7 @@
         <br>
         <input type="submit" value="Luo kurssi">
     </form>
+    </div>
 {% else %}
     <text>Vain opettaja voi luoda kursseja</text>
 {% endif %}

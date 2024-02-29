@@ -1,6 +1,6 @@
 body {
     font-family: arial, sans-serif;
-    padding: 30px;
+    padding: 5px;
     font-size: 18px;
 }
 
@@ -53,5 +53,40 @@ body {
     background-color: #f8efc9;
     border-radius: 10px;
     padding: 5px 8px;
-    border: 1px solid black;
+    border: 1px solid rgb(43, 43, 43);
+    font-size: 15px;
+}
+
+.exercise {
+    padding-left: 30px;
+    padding-top: 10px;
+    padding-bottom: 15px;
+}
+
+.add {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 30px;
+}
+
+.delete {
+    padding-bottom: 15px;
+    padding-left: 30px;
+}
+
+.content {
+    padding: 30px;
+}
+
+.info {
+    padding-left: 30px;
+    padding-top: 10px;
+}
+
+.courses {
+    padding-left: 30px;
+}
+
+.login {
+    padding: 30px;
 }

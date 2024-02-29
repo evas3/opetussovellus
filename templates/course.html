@@ -9,19 +9,23 @@
     <hr>
     <h2>Kurssimateriaali</h2>
     {% if amount[1] %}
+        <div class="content">
         {% for text in content %}
             <text> {{text[0]}} </text>
             <br>
         {% endfor %}
+        </div>
     {% endif %}
     {% if session.teacher %}
-        <br>
-        <text>Muokkaa kurssia:</text>
-        <button onclick="location.href='/edit/{{course[1]}}'">Muokkaa</button>
-        <br>
-        <text>Poista kurssi:</text>
-        <button onclick="location.href='/delete/{{course[1]}}'">Poista</button>
-        <br>
+        <div class="add">
+            <br>
+            <text>Muokkaa kurssia:</text>
+            <button onclick="location.href='/edit/{{course[1]}}'">Muokkaa</button>
+            <br>
+            <br>
+            <text>Poista kurssi:</text>
+            <button onclick="location.href='/delete/{{course[1]}}'">Poista</button>
+        </div>
     {% endif %}
     <script>
         function check(form) {
