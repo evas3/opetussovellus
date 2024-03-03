@@ -40,7 +40,7 @@
     <h2>Kurssitehtävät</h2>
     {% for tes in test %}
         <div class="exercise">
-            <form action="/submit/question/{{ course[1] }}/{{ test[0] }}" method="POST">
+            <form action="/submit/question/{{ course[1] }}/{{ tes[1][0] }}" method="POST">
                 <b>Tehtävä {{ tes[1][0] }}:</b>
                 <br>
                 {{ tes[1][1] }}
@@ -58,7 +58,7 @@
         {% if session.teacher %}
             <div class="delete">
                 <text>Poista tehtävä:</text>
-                <button class="del" onclick="location.href='/delete/question/{{ course[1] }}/{{ test[0] }}'">Poista</button>
+                <button class="del" onclick="location.href='/delete/question/{{ course[1] }}/{{ tes[1][0] }}'">Poista</button>
                 <br>
             </div>
         {% endif %}
@@ -73,7 +73,7 @@
     <h2>Monivalintatehtävä</h2>
     {% for m_test in choices %}
         <div class="exercise">
-            <form action="/submit/multiple_choice/{{ course[1] }}/{{ m_test[0] }}" method="POST">
+            <form action="/submit/multiple_choice/{{ course[1] }}/{{ m_test[1][0] }}" method="POST">
                 <b>Monivalintatehtävä {{ m_test[1][0] }}:</b>
                 <br>
                 {{ m_test[1][1] }}
@@ -93,7 +93,7 @@
         {% if session.teacher %}
             <div class="delete">
                 <text>Poista tehtävä:</text>
-                <button class="del" onclick="location.href='/delete/multiple_choice/{{ course[1] }}/{{ m_test[0] }}'">Poista</button>
+                <button class="del" onclick="location.href='/delete/multiple_choice/{{ course[1] }}/{{ m_test[1][0] }}'">Poista</button>
             </div>
         {% endif %}
     {% endfor %}

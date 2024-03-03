@@ -82,19 +82,22 @@ def check_coursename(coursename):
     return ids
 
 def course_content(course_id):
-    sql = "SELECT Courses.id, Courses.coursename, Content.text_content FROM Courses INNER JOIN Content ON Courses.id=Content.course_id WHERE Courses.id=:id"
+    sql = """SELECT Courses.id, Courses.coursename, Content.text_content FROM
+            Courses INNER JOIN Content ON Courses.id=Content.course_id WHERE Courses.id=:id"""
     execute = db.session.execute(text(sql), {"id":course_id})
     content = execute.fetchone()
     return content
 
 def answered_questions(student):
-    sql = "SELECT c.coursename, COUNT(a.course_id) FROM Courses AS c LEFT JOIN AnsweredQuestions AS a ON a.course_id=c.id WHERE a.student=student GROUP BY c.coursename ORDER BY c.coursename"
+    sql = """SELECT c.coursename, COUNT(a.course_id) FROM Courses AS c LEFT JOIN AnsweredQuestions
+             AS a ON a.course_id=c.id WHERE a.student=student GROUP BY c.coursename ORDER BY c.coursename"""
     execute = db.session.execute(text(sql), {"student":student})
     questions = execute.fetchall()
     return questions
 
 def answered_choices(student):
-    sql = "SELECT c.coursename, COUNT(a.course_id) FROM Courses AS c LEFT JOIN AnsweredMultiple_choice AS a ON a.course_id=c.id WHERE a.student=student GROUP BY c.coursename ORDER BY c.coursename"
+    sql = """SELECT c.coursename, COUNT(a.course_id) FROM Courses AS c LEFT JOIN AnsweredMultiple_choice 
+             AS a ON a.course_id=c.id WHERE a.student=student GROUP BY c.coursename ORDER BY c.coursename"""
     execute = db.session.execute(text(sql), {"student":student})
     choices = execute.fetchall()
     return choices
