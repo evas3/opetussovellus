@@ -134,7 +134,20 @@ def exercises(course_id):
     tests = sql_queries.tests(course_id)
     multiplechoice = sql_queries.multiplechoice_tests(course_id)
     course = sql_queries.spesific_course(course_id)
-    return render_template("exercises.html", course=course, tests=tests, multiplechoice=multiplechoice)
+    statistics = (sql_queries.student_answers(course_id), sql_queries.student_choices(course_id))
+    test = []
+    choices = []
+    for i in tests:
+        if sql_queries.answered(i[0]) > 0:
+            test.append((True, i))
+        else:
+            test.append((False, i))
+    for y in multiplechoice:
+        if sql_queries.answered_c(y[0]) > 0:
+            choices.append((True, y))
+        else:
+            choices.append((False, y))
+    return render_template("exercises.html", course=course, test=test, choices=choices, statistics=statistics)
 
 @app.route("/create/question/<int:id>")
 def create_question(id):

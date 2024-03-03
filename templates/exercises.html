@@ -8,28 +8,51 @@
     </div>
     <br>
     <h2>Tehtävät</h2>
-    <h2>Kurssikohtaiset tilastot</h2>
     {% if session.teacher %}
-    <table>
-        <tr>
-            <th>Oppilas</th>
-            <th>Ratkaistujen kurssitehtävien määrä</th>
-            <th>Ratkaistut kurssitehtävät</th>
-        </tr>
-    </table>
-    {% else %}
+        <h2>Kurssikohtaiset tilastot</h2>
+        <h3>Ratkaissut tehtävät</h3>
+        <table>
+            <tr>
+                <th>Opiskelija  |  </th>
+                <th>Ratkaissut tehtävät</th>
+            </tr>
+        {% for student in  statistics[0] %}
+            <tr>
+                <td>{{student[0]}}</td>
+                <td><text style="float: right;">{{student[1]}}</text></td>
+            </tr>
+        {% endfor %}
+        </table>
+        <h3>Ratkaissut monivalintatehtävä</h3>
+        <table>
+            <tr>
+                <th>Opiskelija  |  </th>
+                <th>Ratkaissut tehtävät</th>
+            </tr>
+        {% for student in  statistics[1] %}
+            <tr>
+                <td>{{student[0]}}</td>
+                <td><text style="float: right;">{{student[1]}}</text></td>
+            </tr>
+        {% endfor %}
+        </table>
     {% endif %}
     <h2>Kurssitehtävät</h2>
-    {% for test in tests %}
+    {% for tes in test %}
         <div class="exercise">
             <form action="/submit/question/{{ course[1] }}/{{ test[0] }}" method="POST">
-                <b>Tehtävä {{ test[0] }}:{{test[2]}}</b>
+                <b>Tehtävä {{ tes[1][0] }}:</b>
                 <br>
-                {{ test[1] }}
+                {{ tes[1][1] }}
                 <br>
                 <input type="text" name="answer">
                 <br>
-                <input type="submit" value="Vastaa">
+                {% if tes[0] %}
+                    <text style="color: green;"> Tehtävä ratkaistu oikein</text>
+                {% endif %}
+                {% if not session.teacher and not tes[0] %}
+                    <input type="submit" value="Vastaa">
+                {% endif %}
         </form>
         </div>
         {% if session.teacher %}
@@ -48,18 +71,23 @@
         </div>
     {% endif %}
     <h2>Monivalintatehtävä</h2>
-    {% for m_test in multiplechoice %}
+    {% for m_test in choices %}
         <div class="exercise">
             <form action="/submit/multiple_choice/{{ course[1] }}/{{ m_test[0] }}" method="POST">
-                <b>Monivalintatehtävä {{ m_test[0] }}:</b>
+                <b>Monivalintatehtävä {{ m_test[1][0] }}:</b>
                 <br>
-                {{ m_test[1] }}
+                {{ m_test[1][1] }}
                 <p>
-                    <input type="radio" name="m_answer" value="1"> {{ m_test[2] }}
-                    <input type="radio" name="m_answer" value="2"> {{ m_test[3] }}
-                    <input type="radio" name="m_answer" value="3"> {{ m_test[4] }}
+                    <input type="radio" name="m_answer" value="1"> {{ m_test[1][2] }}
+                    <input type="radio" name="m_answer" value="2"> {{ m_test[1][3] }}
+                    <input type="radio" name="m_answer" value="3"> {{ m_test[1][4] }}
                 </p>
-                <input type="submit" value="Vastaa">
+                {% if m_test[0] %}
+                    <text style="color: green;"> Tehtävä ratkaistu oikein</text>
+                {% endif %}
+                {% if not session.teacher and not m_test[0] %}
+                    <input type="submit" value="Vastaa">
+                {% endif %}
             </form>
         </div>
         {% if session.teacher %}

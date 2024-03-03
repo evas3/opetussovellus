@@ -26,8 +26,8 @@ def check_username(usersname):
     return users
 
 def tests(course_id):
-    sql_tests = """SELECT q.id, q.question, a.id FROM Questions AS q
-                   LEFT JOIN AnsweredQuestions AS a ON q.id=a.question_id WHERE q.course_id=:id ORDER BY q.id"""
+    sql_tests = """SELECT id, question FROM Questions
+                   WHERE course_id=:id ORDER BY id"""
     execute_tests = db.session.execute(text(sql_tests), {"id":course_id})
     tests = execute_tests.fetchall()
     return tests
@@ -110,3 +110,15 @@ def student_choices(course_id):
     execute = db.session.execute(text(sql), {"id":course_id})
     choices = execute.fetchall()
     return choices
+
+def answered(question_id):
+    sql = "SELECT COUNT(*) FROM AnsweredQuestions WHERE question_id=:id"
+    execute = db.session.execute(text(sql), {"id":question_id})
+    count = execute.fetchone()[0]
+    return count
+
+def answered_c(question_id):
+    sql = "SELECT COUNT(*) FROM AnsweredMultiple_choice WHERE question_id=:id"
+    execute = db.session.execute(text(sql), {"id":question_id})
+    count = execute.fetchone()[0]
+    return count
