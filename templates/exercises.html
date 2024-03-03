@@ -23,7 +23,7 @@
     {% for test in tests %}
         <div class="exercise">
             <form action="/submit/question/{{ course[1] }}/{{ test[0] }}" method="POST">
-                <b>Tehtävä {{ test[0] }}:</b>
+                <b>Tehtävä {{ test[0] }}:{{test[2]}}</b>
                 <br>
                 {{ test[1] }}
                 <br>

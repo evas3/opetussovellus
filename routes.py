@@ -220,7 +220,18 @@ def delete_multiple_choice(id, exercise_id):
 @app.route("/user_data")
 def user_data():
     if len(session["usersname"]) > 0:
-        return render_template("user_data.html")
+        user_info = (session["usersname"], "Opettaja" if session["teacher"] else "Oppilas")
+        if session["teacher"]:
+            teacher_courses = sql_queries.teachers_courses(session["usersname"])
+            answered_questions = []
+            answered_choices = []
+            for course in teacher_courses:
+                answered_questions.append((course[0], sql_queries.student_answers(course[1])))
+                answered_choices.append((course[0], sql_queries.student_choices(course[1])))
+        else:
+            answered_questions = sql_queries.answered_questions(session["usersname"])
+            answered_choices = sql_queries.answered_choices(session["usersname"])
+        return render_template("user_data.html", user_info=user_info, answered_questions=answered_questions, answered_choices=answered_choices)
     flash("Sinun täytyy kirjautua sisään nähdäksesi käyttäjätiedot")
     return redirect("/")
 

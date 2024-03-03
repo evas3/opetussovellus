@@ -3,15 +3,17 @@
 {% block page_content %}
 {% if session.teacher %}
     <h2>Luo tehtävä</h2>
-    <form action="/add/question/{{ id }}" method="POST" onsubmit="return check(this)">
-        Kysymys:
-        <input type="text" name="question">
-        <br>
-        Oikea vastaus:
-        <input type="text" name="answer">
-        <br>
-        <input type="submit" value="Lisää tehtävä">
-    </form>
+    <div class="info">
+        <form action="/add/question/{{ id }}" method="POST" onsubmit="return check(this)">
+            Kysymys:
+            <input type="text" name="question">
+            <br>
+            Oikea vastaus:
+            <input type="text" name="answer">
+            <br>
+            <input type="submit" value="Lisää tehtävä">
+        </form>
+    </div>
 {% else %}
     <text>Vain kurssin opettaja voi luoda kurssitehtäviä</text>
 {% endif %}

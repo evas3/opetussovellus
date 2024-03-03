@@ -40,3 +40,4 @@ CREATE TABLE AnsweredMultiple_choice (
     course_id INTEGER REFERENCES Courses(id),
     question_id INTEGER REFERENCES Multiple_choice(id),
     student TEXT REFERENCES Users(username));
+ 

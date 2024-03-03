@@ -26,15 +26,15 @@ def check_username(usersname):
     return users
 
 def tests(course_id):
-    sql_tests = """SELECT id, question FROM Questions
-                   WHERE course_id=:id"""
+    sql_tests = """SELECT q.id, q.question, a.id FROM Questions AS q
+                   LEFT JOIN AnsweredQuestions AS a ON q.id=a.question_id WHERE q.course_id=:id ORDER BY q.id"""
     execute_tests = db.session.execute(text(sql_tests), {"id":course_id})
     tests = execute_tests.fetchall()
     return tests
 
 def multiplechoice_tests(course_id):
     sql_multiplechoice = """SELECT id, question, choice1, choice2,
-                            choice3 FROM Multiple_choice WHERE course_id=:id"""
+                            choice3 FROM Multiple_choice WHERE course_id=:id ORDER BY id"""
     execute_multiplechoice = db.session.execute(text(sql_multiplechoice), {"id":course_id})
     multiplechoice = execute_multiplechoice.fetchall()
     return multiplechoice
@@ -86,3 +86,27 @@ def course_content(course_id):
     execute = db.session.execute(text(sql), {"id":course_id})
     content = execute.fetchone()
     return content
+
+def answered_questions(student):
+    sql = "SELECT c.coursename, COUNT(a.course_id) FROM Courses AS c LEFT JOIN AnsweredQuestions AS a ON a.course_id=c.id WHERE a.student=student GROUP BY c.coursename ORDER BY c.coursename"
+    execute = db.session.execute(text(sql), {"student":student})
+    questions = execute.fetchall()
+    return questions
+
+def answered_choices(student):
+    sql = "SELECT c.coursename, COUNT(a.course_id) FROM Courses AS c LEFT JOIN AnsweredMultiple_choice AS a ON a.course_id=c.id WHERE a.student=student GROUP BY c.coursename ORDER BY c.coursename"
+    execute = db.session.execute(text(sql), {"student":student})
+    choices = execute.fetchall()
+    return choices
+
+def student_answers(course_id):
+    sql = "SELECT student, COUNT(course_id) FROM AnsweredQuestions WHERE course_id=:id GROUP BY student ORDER BY student"
+    execute = db.session.execute(text(sql), {"id":course_id})
+    questions = execute.fetchall()
+    return questions
+
+def student_choices(course_id):
+    sql = "SELECT student, COUNT(course_id) FROM AnsweredMultiple_choice WHERE course_id=:id GROUP BY student ORDER BY student"
+    execute = db.session.execute(text(sql), {"id":course_id})
+    choices = execute.fetchall()
+    return choices

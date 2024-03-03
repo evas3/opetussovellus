@@ -2,7 +2,75 @@
 {% block title %}Uusi kurssi{% endblock %}
 {% block page_content %}
 <h1>Käyttäjätiedot</h1>
+<div class="info">
+<b>Käyttäjänimi: </b>{{user_info[0]}}
+<br>
+<b>Käyttäjärooli: </b>{{user_info[1]}}
+</div>
+<br>
 <h2>Ratkaissut tehtävät</h2>
+{% if session.teacher %}
+    {% for course in answered_questions %}
+        <h3>{{course[0]}}</h3>
+        <table>
+            <tr>
+                <th>Opiskelija  |  </th>
+                <th>Ratkaissut tehtävät</th>
+            </tr>
+        {% for course in course[1] %}
+            <tr>
+                <td>{{course[0]}}</td>
+                <td><text style="float: right;">{{course[1]}}</text></td>
+            </tr>
+        {% endfor %}
+        </table>
+    {% endfor %}
+{% else %}
+    <table>
+        <tr>
+            <th>Kurssi</th>
+            <th>Ratkaissut tehtävät</th>
+        </tr>
+        {% for course in answered_questions %}
+            <tr>
+                <td>{{course[0]}}</td>
+                <td><text style="float: right;">{{course[1]}}</text></td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endif %}
+
+<h2>Ratkaissut monivalintatehtävät</h2>
+{% if session.teacher %}
+    {% for course in answered_choices %}
+        <h3>{{course[0]}}</h3>
+        <table>
+            <tr>
+                <th>Opiskelija  |  </th>
+                <th>Ratkaissut tehtävät</th>
+            </tr>
+        {% for course in course[1] %}
+            <tr>
+                <td>{{course[0]}}</td>
+                <td><text style="float: right;">{{course[1]}}</text></td>
+            </tr>
+        {% endfor %}
+        </table>
+    {% endfor %}
+{% else %}
+    <table>
+        <tr>
+            <th>Kurssi</th>
+            <th>Ratkaissut tehtävät</th>
+        </tr>
+        {% for choice in answered_choices %}
+            <tr>
+                <td>{{choice[0]}}</td>
+                <td><text style="float: right;">{{choice[1]}}</text></td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endif %}
 <h2>Poista tili</h2>
 <div class="delete">
     <text>Poista käyttäjätili. Tilin poistamista ei voi peruuttaa</text>

@@ -25,7 +25,7 @@ body {
 
 .navigation2 {
     overflow: hidden;
-    background-color: #988dae;
+    background-color: #b4acc5;
     border-radius: 5px;
     width: 232px;
 }
@@ -113,7 +113,11 @@ body {
 }
 
 .del {
-    background-color: rgb(226, 189, 189);
+    background-color: #FADCD9;
     border-radius: 5px;
     font-weight: bold;
+}
+
+table, td {
+    border: 1px solid black
 }
